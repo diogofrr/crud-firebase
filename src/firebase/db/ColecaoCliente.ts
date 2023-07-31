@@ -6,15 +6,15 @@ import { QueryDocumentSnapshot, addDoc, collection, deleteDoc, doc, getDocs, set
 export default class ColecaoCliente implements ClienteRepositorio {
 
   #conversor = {
-    toFirestore(cliente: Cliente) {
+    toFirestore({ nome, idade }: Cliente) {
       return {
-        nome: cliente.nome,
-        idade: cliente.idade
+        nome,
+        idade
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: any) {
-      const dados = snapshot.data(options);
-      return new Cliente(dados.nome, dados.idade, snapshot.id);
+      const { nome, idade } = snapshot.data(options);
+      return new Cliente(nome, idade, snapshot.id);
     }
   };
   

@@ -4,45 +4,26 @@ import Botao from "@/components/Botao";
 import Formulario from "@/components/Formulario";
 import Header from "@/components/Header";
 import Tabela from "@/components/Tabela";
-import Cliente from "@/core/Cliente";
-import { useState } from "react";
+import useClientes from "@/hooks/useClientes";
+
 
 export default function Home() {
-  
-  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
-  const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela')
-
-  const clientes = [
-    new Cliente('Ana', 34, '1'),
-    new Cliente('Bia', 45, '2'),
-    new Cliente('Carlos', 23, '3'),
-    new Cliente('Pedro', 54, '4')
-  ]
-
-  function novoCliente() {
-    setCliente(Cliente.vazio())
-    setVisivel('form')
-  }
-
-  function clienteSelecionado(cliente: Cliente) {
-    setCliente(cliente)
-    setVisivel('form')
-  }
-
-  function clienteExcluido(cliente: Cliente) {
-    console.log(`Excluir ${cliente.nome}`)
-  }
-
-  function salvarCliente(cliente: Cliente) {
-    console.log(cliente)
-    setVisivel('tabela')
-  }
+  const {
+    cliente,
+    clientes,
+    salvarCliente, 
+    excluirCliente, 
+    selecionarCliente, 
+    novoCliente,
+    tabelaVisivel,
+    exibirTabela
+  } = useClientes()
 
   return (
     <>
       <Header titulo={'CADASTRO DE USUÁRIOS'} />
       <section className="px-8 py-4">
-        {visivel === 'tabela' ? (
+        {tabelaVisivel ? (
           <>
             <div className="flex justify-end">
               <Botao
@@ -53,10 +34,10 @@ export default function Home() {
                 + NOVO CLIENTE
               </Botao>
             </div>
-            <Tabela clientes={clientes} clienteSelecionado={clienteSelecionado} clienteExcluido={clienteExcluido} />
+            <Tabela clientes={clientes} clienteSelecionado={selecionarCliente} clienteExcluido={excluirCliente} />
           </>
         ) : (
-          <Formulario cliente={cliente} cancelar={() => setVisivel('tabela')} clienteMudou={salvarCliente} />
+          <Formulario cliente={cliente} cancelar={exibirTabela} clienteMudou={salvarCliente} />
         )}
       </section>
     </>
