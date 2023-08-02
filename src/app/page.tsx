@@ -3,8 +3,10 @@
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Header from "@/components/Header";
-import Tabela from "@/components/Table";
+import SnackBar from "@/components/SnackBar";
+import Table from "@/components/Table";
 import useClients from "@/hooks/useClients";
+import useStatus from "@/hooks/useStatus";
 
 
 export default function Home() {
@@ -18,6 +20,8 @@ export default function Home() {
     deleteClient,
     showTable
   } = useClients()
+
+  const { message, status, startLoading, stopLoading} = useStatus()
 
   return (
     <>
@@ -34,7 +38,7 @@ export default function Home() {
                 + NOVO CLIENTE
               </Button>
             </div>
-            <Tabela clients={clients} selectClient={selectClient} deleteClient={deleteClient} />
+            <Table clients={clients} selectClient={selectClient} deleteClient={deleteClient} />
           </>
         ) : (
           <Form client={client} cancel={showTable} changeClient={saveClient} />

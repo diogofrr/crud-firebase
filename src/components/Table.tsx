@@ -7,7 +7,7 @@ interface ITableProps {
   deleteClient?: (client: Client) => void
 }
 
-export default function Tabela({ clients, selectClient, deleteClient }: ITableProps) {
+export default function Table({ clients, selectClient, deleteClient }: ITableProps) {
 
   const showActions = deleteClient || selectClient
 
@@ -23,8 +23,7 @@ export default function Tabela({ clients, selectClient, deleteClient }: ITablePr
   }
 
   function tableData() {
-    return clients?.map((client, index) => {
-      return (
+    return clients.map((client, index) => (
         <tr key={client.id} className={`${index % 2 === 0 ? 'bg-purple-200' : 'bg-purple-100'}`}>
           <td className="text-left p-4 text-gray-950">{client.id}</td>
           <td className="text-left p-4 text-gray-950">{client.name}</td>
@@ -32,7 +31,7 @@ export default function Tabela({ clients, selectClient, deleteClient }: ITablePr
           {showActions && <Actions client={client} selectClient={selectClient} deleteClient={deleteClient} />}
         </tr>
       )
-    })
+    )
   }
 
   return (

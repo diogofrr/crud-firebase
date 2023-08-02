@@ -15,8 +15,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex h-screen justify-center items-center bg-gradient-to-br from-purple-800 to-purple-700`}>
-        <main className="h-5/6 w-11/12 bg-white rounded-md">
+      <body className={`${inter.className} flex h-screen justify-center items-center`}>
+        <main className="h-full w-full bg-white">
           {children}
         </main>
       </body>
