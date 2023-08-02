@@ -1,43 +1,43 @@
 'use client'
 
-import Botao from "@/components/Botao";
-import Formulario from "@/components/Formulario";
+import Button from "@/components/Button";
+import Form from "@/components/Form";
 import Header from "@/components/Header";
-import Tabela from "@/components/Tabela";
-import useClientes from "@/hooks/useClientes";
+import Tabela from "@/components/Table";
+import useClients from "@/hooks/useClients";
 
 
 export default function Home() {
   const {
-    cliente,
-    clientes,
-    salvarCliente, 
-    excluirCliente, 
-    selecionarCliente, 
-    novoCliente,
-    tabelaVisivel,
-    exibirTabela
-  } = useClientes()
+    client,
+    clients,
+    tableIsVisible,
+    saveClient,
+    newClient,
+    selectClient,
+    deleteClient,
+    showTable
+  } = useClients()
 
   return (
     <>
-      <Header titulo={'CADASTRO DE USUÁRIOS'} />
+      <Header title={'CADASTRO DE USUÁRIOS'} />
       <section className="px-8 py-4">
-        {tabelaVisivel ? (
+        {tableIsVisible ? (
           <>
             <div className="flex justify-end">
-              <Botao
-                onClick={novoCliente}
+              <Button
+                onClick={newClient}
                 className="mb-4"
-                cor="purple"
+                color="purple"
               >
                 + NOVO CLIENTE
-              </Botao>
+              </Button>
             </div>
-            <Tabela clientes={clientes} clienteSelecionado={selecionarCliente} clienteExcluido={excluirCliente} />
+            <Tabela clients={clients} selectClient={selectClient} deleteClient={deleteClient} />
           </>
         ) : (
-          <Formulario cliente={cliente} cancelar={exibirTabela} clienteMudou={salvarCliente} />
+          <Form client={client} cancel={showTable} changeClient={saveClient} />
         )}
       </section>
     </>
