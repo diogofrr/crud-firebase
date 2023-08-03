@@ -3,11 +3,9 @@
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Header from "@/components/Header";
-import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import TableSkeleton from "@/components/TableSkeleton";
 import useClients from "@/hooks/useClients";
-
 
 export default function Home() {
   const {
@@ -16,15 +14,18 @@ export default function Home() {
     tableIsVisible,
     saveClient,
     newClient,
-    selectClient,
+    editClient,
     deleteClient,
     showTable,
-    status
+    status,
+    message,
+    openSnackBar,
+    closeSnackBar
   } = useClients()
 
   return (
     <>
-      <Header title={'CADASTRO DE USUÁRIOS'} />
+      <Header />
       <section className="px-8 py-4">
         {tableIsVisible ? (
           <>
@@ -37,11 +38,15 @@ export default function Home() {
                 + NOVO CLIENTE
               </Button>
             </div>
-            {status !== 'loading' ? (
-                <Table clients={clients} selectClient={selectClient} deleteClient={deleteClient} />
-              ) : (
-                <TableSkeleton />
-              )}
+            <Table
+              clients={clients}
+              editClient={editClient}
+              deleteClient={deleteClient}
+              openSnackBar={openSnackBar}
+              message={message}
+              status={status}
+              closeSnackBar={closeSnackBar}
+              />
           </>
         ) : (
           <Form client={client} cancel={showTable} changeClient={saveClient} />

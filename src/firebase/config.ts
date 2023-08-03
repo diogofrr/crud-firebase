@@ -19,7 +19,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc } from "firebase/firestore";
-import { getApps } from 'firebase/app'; // Importação específica para verificar se o app já foi inicializado
+import { getApps } from 'firebase/app';
 
 if (!getApps().length) {
   const firebaseConfig = {

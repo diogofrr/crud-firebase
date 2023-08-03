@@ -1,15 +1,39 @@
 import Client from "@/core/Client"
 import Actions from "./Actions"
+import useModal from "@/hooks/useModal"
+import DeleteModal from "./DeleteModal"
+import { useState } from "react"
+import SnackBar from "./SnackBar"
+import { STATUS } from "@/types/global"
 
 interface ITableProps {
   clients: Client[]
-  selectClient?: (client: Client) => void
+  editClient?: (client: Client) => void
   deleteClient?: (client: Client) => void
+  openSnackBar: boolean
+  message: string
+  status: STATUS
+  closeSnackBar: () => void
 }
 
-export default function Table({ clients, selectClient, deleteClient }: ITableProps) {
+export default function Table({ clients, editClient, deleteClient, openSnackBar, closeSnackBar, message, status }: ITableProps) {
+  const showActions = deleteClient || editClient
+  const [client, setClient] = useState<Client>(Client.empty())
+  const { handleCloseModal, handleOpenModal, openModal } = useModal()
 
-  const showActions = deleteClient || selectClient
+  function handleOpenDeleteModal(client: Client) {
+    handleOpenModal()
+    setClient(client)
+  }
+
+  function handleCloseDeleteModal() {
+    handleCloseModal()
+    setClient(Client.empty())
+  }
+
+  function handleDeleteClient() {
+    deleteClient?.(client)
+  }
 
   function tableHeader() {
     return (
@@ -28,20 +52,24 @@ export default function Table({ clients, selectClient, deleteClient }: ITablePro
           <td className="text-left p-4 text-gray-950">{client.id}</td>
           <td className="text-left p-4 text-gray-950">{client.name}</td>
           <td className="text-left p-4 text-gray-950">{client.age}</td>
-          {showActions && <Actions client={client} selectClient={selectClient} deleteClient={deleteClient} />}
+          {showActions && <Actions client={client} editClient={editClient} handleOpenDeleteModal={() => handleOpenDeleteModal(client)} />}
         </tr>
       )
     )
   }
 
   return (
-    <table className="w-full rounded-xl overflow-hidden">
-      <thead className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-100">
-        {tableHeader()}
-      </thead>
-      <tbody>
-        {tableData()}
-      </tbody>
-    </table>
+    <>
+      <SnackBar open={openSnackBar} message={message} type={status} closeSnackBar={closeSnackBar} />
+      <DeleteModal open={openModal} handleCloseModal={handleCloseDeleteModal} deleteClient={handleDeleteClient} />
+      <table className="w-full rounded-xl overflow-hidden">
+        <thead className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-100">
+          {tableHeader()}
+        </thead>
+        <tbody>
+          {tableData()}
+        </tbody>
+      </table>
+    </>
   )
 }

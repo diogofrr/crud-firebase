@@ -1,4 +1,4 @@
-import Cliente from "@/core/Client"
+import Client from "@/core/Client"
 import IClientRepo from "@/core/ClientRepo"
 import ClientCollection from "@/firebase/db/ClientCollection"
 import { useState, useEffect } from "react"
@@ -8,39 +8,43 @@ import useStatus from "./useStatus"
 export default function useClients() {
   const repo: IClientRepo = new ClientCollection()
 
-  const [client, setClient] = useState<Cliente>(Cliente.empty())
-  const [clients, setClients] = useState<Cliente[]>([])
-  const { formIsVisible, tableIsVisible, showForm, showTable } = useVisibility()
-  const { startLoading, stopLoading, status } = useStatus()
+  const [client, setClient] = useState<Client>(Client.empty())
+  const [clients, setClients] = useState<Client[]>([])
+  const { tableIsVisible, showForm, showTable } = useVisibility()
+  const { startLoading, stopLoading, status, message, openSnackBar, closeSnackBar } = useStatus()
 
   useEffect(() => getAll(), [])
 
   function getAll() {
-    startLoading('Carregando clientes')
     repo.getAll().then(clients => {
       setClients(clients)
       showTable()
     })
-    stopLoading('success', 'Clientes buscados com sucesso!')
   }
 
   function newClient() {
-    setClient(Cliente.empty())
+    setClient(Client.empty())
     showForm()
   }
 
-  function selectClient(cliente: Cliente) {
-    setClient(cliente)
+  function editClient(client: Client) {
+    setClient(client)
     showForm()
   }
 
-  async function deleteClient(cliente: Cliente) {
-    await repo.delete(cliente)
+  async function deleteClient(client: Client) {
+    startLoading('Excluindo conteúdo...')
+    await repo.delete(client)
+      .then(() => stopLoading('success', 'Cliente excluído com sucesso!!'))
+      .catch(() => stopLoading('error', 'Falha ao excluir cliente.'))
     getAll()
   }
 
-  async function saveClient(cliente: Cliente) {
-    await repo.save(cliente)
+  async function saveClient(client: Client) {
+    startLoading('Salvando conteúdo...')
+    await repo.save(client)
+      .then(() => stopLoading('success', 'Cliente salvo com sucesso!!'))
+      .catch(() => stopLoading('error', 'Falha ao salvar cliente.'))
     getAll()
   }
 
@@ -50,9 +54,12 @@ export default function useClients() {
     tableIsVisible,
     saveClient,
     newClient,
-    selectClient,
+    editClient,
     deleteClient,
     showTable,
-    status
+    status,
+    message,
+    openSnackBar,
+    closeSnackBar
   }
 }
