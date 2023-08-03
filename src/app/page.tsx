@@ -3,10 +3,10 @@
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Header from "@/components/Header";
-import SnackBar from "@/components/SnackBar";
+import Modal from "@/components/Modal";
 import Table from "@/components/Table";
+import TableSkeleton from "@/components/TableSkeleton";
 import useClients from "@/hooks/useClients";
-import useStatus from "@/hooks/useStatus";
 
 
 export default function Home() {
@@ -18,10 +18,9 @@ export default function Home() {
     newClient,
     selectClient,
     deleteClient,
-    showTable
+    showTable,
+    status
   } = useClients()
-
-  const { message, status, startLoading, stopLoading} = useStatus()
 
   return (
     <>
@@ -33,12 +32,16 @@ export default function Home() {
               <Button
                 onClick={newClient}
                 className="mb-4"
-                color="purple"
+                color="gray"
               >
                 + NOVO CLIENTE
               </Button>
             </div>
-            <Table clients={clients} selectClient={selectClient} deleteClient={deleteClient} />
+            {status !== 'loading' ? (
+                <Table clients={clients} selectClient={selectClient} deleteClient={deleteClient} />
+              ) : (
+                <TableSkeleton />
+              )}
           </>
         ) : (
           <Form client={client} cancel={showTable} changeClient={saveClient} />

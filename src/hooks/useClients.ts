@@ -3,6 +3,7 @@ import IClientRepo from "@/core/ClientRepo"
 import ClientCollection from "@/firebase/db/ClientCollection"
 import { useState, useEffect } from "react"
 import useVisibility from "./useVisibility"
+import useStatus from "./useStatus"
 
 export default function useClients() {
   const repo: IClientRepo = new ClientCollection()
@@ -10,14 +11,17 @@ export default function useClients() {
   const [client, setClient] = useState<Cliente>(Cliente.empty())
   const [clients, setClients] = useState<Cliente[]>([])
   const { formIsVisible, tableIsVisible, showForm, showTable } = useVisibility()
+  const { startLoading, stopLoading, status } = useStatus()
 
   useEffect(() => getAll(), [])
 
   function getAll() {
+    startLoading('Carregando clientes')
     repo.getAll().then(clients => {
       setClients(clients)
       showTable()
     })
+    stopLoading('success', 'Clientes buscados com sucesso!')
   }
 
   function newClient() {
@@ -48,6 +52,7 @@ export default function useClients() {
     newClient,
     selectClient,
     deleteClient,
-    showTable
+    showTable,
+    status
   }
 }

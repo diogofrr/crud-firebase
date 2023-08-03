@@ -4,6 +4,7 @@ import Client from "@/core/Client"
 import { EditIcon, TrashIcon } from "./Icons"
 import useStatus from "@/hooks/useStatus"
 import SnackBar from "./SnackBar"
+import Modal from "./Modal"
 
 interface IActionProps {
   client: Client
@@ -13,8 +14,6 @@ interface IActionProps {
 
 export default function Actions({ client, selectClient, deleteClient }: IActionProps) {
   const { message, status, startLoading, stopLoading } = useStatus()
-
-  const handleDeleteClient = () => {}
 
   return (
     <>

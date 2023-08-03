@@ -24,7 +24,7 @@ export default function Table({ clients, selectClient, deleteClient }: ITablePro
 
   function tableData() {
     return clients.map((client, index) => (
-        <tr key={client.id} className={`${index % 2 === 0 ? 'bg-purple-200' : 'bg-purple-100'}`}>
+        <tr key={client.id} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}`}>
           <td className="text-left p-4 text-gray-950">{client.id}</td>
           <td className="text-left p-4 text-gray-950">{client.name}</td>
           <td className="text-left p-4 text-gray-950">{client.age}</td>
@@ -36,7 +36,7 @@ export default function Table({ clients, selectClient, deleteClient }: ITablePro
 
   return (
     <table className="w-full rounded-xl overflow-hidden">
-      <thead className="bg-gradient-to-r from-purple-950 to-purple-900 text-gray-100">
+      <thead className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-100">
         {tableHeader()}
       </thead>
       <tbody>
