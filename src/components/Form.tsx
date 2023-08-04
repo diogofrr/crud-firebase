@@ -1,104 +1,120 @@
 'use client'
 
-import { useState } from "react";
 import Field from "./Field";
 import Client from "@/core/Client";
 import Button from "./Button";
 import SnackBar from "./SnackBar";
 import useStatus from "@/hooks/useStatus";
+import useFormValidation from "@/hooks/useFormValidation";
 
 interface IFormProps {
   client: Client
   cancel: () => void
   changeClient?: (cliente: Client) => void
 }
-
-interface IFormErrorFields {
-  name: boolean
-  age: boolean
-}
-
-interface IFormMessageFields {
-  name: string
-  age: string
-}
-
 export default function Form({ client, cancel, changeClient }: IFormProps) {
-  const id = client?.id
-  const [name, setName] = useState(client?.name ?? '')
-  const [age, setAge] = useState(0)
-  const [formError, setFormError] = useState<IFormErrorFields>({
-    name: false,
-    age: false
-  })
-  const [formMessage, setFormMessage] = useState<IFormMessageFields>({
-    name: '',
-    age: ''
-  })
-  
   const { message, closeSnackBar, openSnackBar, status } = useStatus()
 
-  function handleSaveClient() {
-    if (name === '') {
-      setFormError(prevStatus => ({
-        ...prevStatus,
-        name: true,
-      }))
-      setFormMessage(prevStatus => ({
-        ...prevStatus,
-        name: 'O preenchimento deste campo é obrigatório.',
-      }))
-      return
+  const initialValues = {
+    id: client?.id,
+    name: client?.name ?? '',
+    age: client?.age ?? ''
+  }
+
+  const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
+
+  function handleSaveAndValidateClient() {
+    // handleValidate(() => {
+    //   const updatedErrors = {
+    //     name: '',
+    //     age: ''
+    //   }
+      
+    //   if (values.name === '') {
+    //     updatedErrors.name = 'Por favor, insira um nome válido'
+    //   }
+      
+    //   if (values.age <= 0 || values.age >= 120 ) {
+    //     updatedErrors.age = 'Por favor insira uma idade válida.'
+    //   } 
+
+    //   if (Object.values(updatedErrors).every(error => error === '')) changeClient?.(new Client(values.name, +values.age, values.id))
+    
+    //   return updatedErrors
+    // })
+    if (Object.values(errors).every(error => error === '')) changeClient?.(new Client(values.name, +values.age, values.id))
+  }
+
+  function nameFieldValidation(value: string) {
+    const updatedErrors = errors
+
+    if (value === '') {
+      console.log('Inválido: ' + value)
+      updatedErrors.name = 'Por favor, insira um nome válido.'
+    } else {
+      console.log('Válido: ' + value)
+      updatedErrors.name = ''
     }
 
-    if (age <= 0 || age > 120 ) {
-      setFormError(prevStatus => ({
-        ...prevStatus,
-        age: true,
-      }))
-      setFormMessage(prevStatus => ({
-        ...prevStatus,
-        age: 'A idade deve ser maior que 0 e menor que 120.',
-      }))
-      return
-    }
+    return updatedErrors
+  }
 
-    changeClient?.(new Client(name, +age, id))
+  function ageFieldValidation(value: number) {
+    const updatedErrors = errors
+
+    if (value <= 0 || value > 120){
+      updatedErrors.age = 'Por favor, insira uma idade válida.'
+      console.log('Inválido: ' + value)
+    } else {
+      console.log('Válido: ' + value)
+      updatedErrors.age = ''
+    }
   }
 
   return (
     <>
+      <p className="text-black">{JSON.stringify(values)}</p>
+      <p className="text-black">{JSON.stringify(errors)}</p>
       <SnackBar closeSnackBar={closeSnackBar} open={openSnackBar} type={status} message={message} />
-      <form>
-        {id && (
+      <form onSubmit={(e) => handleSubmit(e, handleSaveAndValidateClient)}>
+        {values.id && (
           <Field
             text="Código"
-            value={id}
+            value={values.id}
             type="text"
             readOnly={true}
+            name="id"
+            id="fieldId"
+            errors={errors}
           />
         )}
         <Field
           text="Nome"
           type="text"
-          value={name}
-          onChange={setName}
+          value={values.name}
+          onChange={handleChangeValue}
+          name="name"
+          id="nameField"
+          errors={errors}
+          validation={nameFieldValidation}
         />
-        {formError.name && <p className="text-red-600">{formMessage.name}</p>}
         <Field
           text="Idade"
           type="number"
-          value={age}
-          onChange={setAge}
+          value={values.age}
+          onChange={handleChangeValue}
+          name="age"
+          id="ageField"
+          errors={errors}
+          validation={ageFieldValidation}
         />
-        {formError.age && <p className="text-red-600">{formMessage.age}</p>}
         <div className="flex justify-end mt-7">
           <Button
-            onClick={handleSaveClient}
+            type="submit"
             color="green"
             className="mr-2"
           >
-            {id ? 'ALTERAR': 'SALVAR'}
+            {values.id ? 'ALTERAR': 'SALVAR'}
           </Button>
           <Button onClick={cancel} color="gray">
             CANCELAR

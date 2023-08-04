@@ -1,19 +1,23 @@
 'use client'
 
-import { Dispatch, SetStateAction } from "react"
-
 interface IFieldProps {
   text: string
   type: 'text' | 'number'
   value: any
   readOnly?: boolean
-  onChange?: Dispatch<SetStateAction<any>>
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>, validation?: () => void) => void
+  name: string
+  id: string
+  errors: {
+    [key: string]: string;
+  }
+  validation?: (value: any) => void
 }
 
-export default function Field({ text, type, value, readOnly = false, onChange }: IFieldProps) {
+export default function Field({ text, type, value, readOnly = false, onChange, name, id, errors, validation }: IFieldProps) {
   return (
     <div className="flex flex-col mb-4">
-      <label className="text-black mb-2">{text}</label>
+      <label className="text-black mb-1 font-semibold">{text}</label>
       <input
         className={`
           text-black
@@ -26,8 +30,14 @@ export default function Field({ text, type, value, readOnly = false, onChange }:
         type={type}
         value={value}
         readOnly={readOnly}
-        onChange={e => onChange?.(e.target.value)}
+        onChange={(e) => {
+          onChange?.(e)
+          validation?.(e.target.value)
+        }}
+        name={name}
+        id={id}
       />
+      {errors[name] && <p className="text-red-600">{errors[name]}</p>}
     </div>
   )
 }

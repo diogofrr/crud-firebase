@@ -4,7 +4,7 @@ interface IButtonProps {
   children: any
   color?: 'gray' | 'purple' | 'green' | 'red'
   className?: string
-  onClick: () => void
+  onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
 }
 
