@@ -6,6 +6,7 @@ interface IButtonProps {
   className?: string
   onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
 }
 
 const buttonColors = {
@@ -15,9 +16,9 @@ const buttonColors = {
   red: 'bg-red-600 hover:bg-red-700 text-red-100'
 }
 
-export default function Button({ children, color = 'purple', className, onClick, type = 'button' }: IButtonProps) {
+export default function Button({ children, color = 'purple', className, onClick, type = 'button', disabled = false }: IButtonProps) {
   return (
-    <button type={type} onClick={onClick} className={`font-semibold px-4 py-2 rounded-md ${buttonColors[color]} ${className}`}>
+    <button disabled={disabled} type={type} onClick={onClick} className={`font-semibold px-4 py-2 rounded-md ${buttonColors[color]} ${className}`}>
       {children}
     </button>
   )

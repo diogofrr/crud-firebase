@@ -49,7 +49,15 @@ export default function Home() {
               />
           </>
         ) : (
-          <Form client={client} cancel={showTable} changeClient={saveClient} />
+          <Form
+            client={client}
+            cancel={showTable}
+            changeClient={saveClient}
+            openSnackBar={openSnackBar}
+            message={message}
+            status={status}
+            closeSnackBar={closeSnackBar}
+          />
         )}
       </section>
     </>

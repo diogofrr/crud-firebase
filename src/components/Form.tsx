@@ -4,17 +4,20 @@ import Field from "./Field";
 import Client from "@/core/Client";
 import Button from "./Button";
 import SnackBar from "./SnackBar";
-import useStatus from "@/hooks/useStatus";
 import useFormValidation from "@/hooks/useFormValidation";
+import { STATUS } from "@/types/global";
+import { Spinner } from "@/components/Icons"
 
 interface IFormProps {
   client: Client
   cancel: () => void
   changeClient?: (cliente: Client) => void
+  openSnackBar: boolean
+  message: string
+  status: STATUS
+  closeSnackBar: () => void
 }
-export default function Form({ client, cancel, changeClient }: IFormProps) {
-  const { message, closeSnackBar, openSnackBar, status } = useStatus()
-
+export default function Form({ client, cancel, changeClient, openSnackBar, message, status, closeSnackBar }: IFormProps) {
   const initialValues = {
     id: client?.id,
     name: client?.name ?? '',
@@ -24,24 +27,20 @@ export default function Form({ client, cancel, changeClient }: IFormProps) {
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
 
   function handleSaveAndValidateClient() {
-    // handleValidate(() => {
-    //   const updatedErrors = {
-    //     name: '',
-    //     age: ''
-    //   }
-      
-    //   if (values.name === '') {
-    //     updatedErrors.name = 'Por favor, insira um nome válido'
-    //   }
-      
-    //   if (values.age <= 0 || values.age >= 120 ) {
-    //     updatedErrors.age = 'Por favor insira uma idade válida.'
-    //   } 
+    handleValidate(() => {
+      const updatedErrors = {
+        name: '',
+        age: ''
+      }
 
-    //   if (Object.values(updatedErrors).every(error => error === '')) changeClient?.(new Client(values.name, +values.age, values.id))
+      updatedErrors.name = nameFieldValidation(values.name).name
+      updatedErrors.age = ageFieldValidation(+values.age).age
+
+      if (Object.values(updatedErrors).every(error => error === '')) changeClient?.(new Client(values.name, +values.age, values.id))
     
-    //   return updatedErrors
-    // })
+      return updatedErrors
+    })
+
     if (Object.values(errors).every(error => error === '')) changeClient?.(new Client(values.name, +values.age, values.id))
   }
 
@@ -69,13 +68,15 @@ export default function Form({ client, cancel, changeClient }: IFormProps) {
       console.log('Válido: ' + value)
       updatedErrors.age = ''
     }
+
+    return updatedErrors
   }
 
   return (
     <>
       <p className="text-black">{JSON.stringify(values)}</p>
       <p className="text-black">{JSON.stringify(errors)}</p>
-      <SnackBar closeSnackBar={closeSnackBar} open={openSnackBar} type={status} message={message} />
+      <SnackBar open={openSnackBar} message={message} type={status} closeSnackBar={closeSnackBar} />
       <form onSubmit={(e) => handleSubmit(e, handleSaveAndValidateClient)}>
         {values.id && (
           <Field
@@ -113,8 +114,14 @@ export default function Form({ client, cancel, changeClient }: IFormProps) {
             type="submit"
             color="green"
             className="mr-2"
+            disabled={status === 'loading'}
           >
-            {values.id ? 'ALTERAR': 'SALVAR'}
+            {status !== 'loading' ? (
+              <Spinner color="fill-green-700" width="w-5" height="w-5"  className="mx-5"/>
+            ) 
+            : (
+              values.id ? 'ALTERAR': 'SALVAR'
+            )}
           </Button>
           <Button onClick={cancel} color="gray">
             CANCELAR

@@ -8,6 +8,7 @@ interface IFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>, validation?: () => void) => void
   name: string
   id: string
+  min?: string
   errors: {
     [key: string]: string;
   }

@@ -2,8 +2,8 @@ import { STATUS } from "@/types/global";
 import { useState } from "react";
 
 export default function useStatus() {
-  const [status, setStatus] = useState<STATUS>('loading')
-  const [message, setMessage] = useState<string>('Carregando...')
+  const [status, setStatus] = useState<STATUS>('')
+  const [message, setMessage] = useState<string>('')
   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false)
 
   function startLoading(message: string) {
@@ -17,8 +17,8 @@ export default function useStatus() {
     setMessage(message)
     setTimeout(() => {
       setOpenSnackBar(false)
-      setStatus('loading')
-      setMessage('Carregando...')
+      setStatus('')
+      setMessage('')
     }, 5000)
   }
 
