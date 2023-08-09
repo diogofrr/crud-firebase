@@ -53,6 +53,9 @@ export default function useClients() {
         status: 'error',
         message: 'Falha ao excluir cliente.' 
       }))
+      .finally(() => setTimeout(() => {
+        context?.resetStatus()
+      }, 2500))
     updateClients()
   }
 
@@ -66,6 +69,9 @@ export default function useClients() {
         status: 'error',
         message: 'Falha ao salvar cliente.'
       }))
+      .finally(() => setTimeout(() => {
+        context?.resetStatus()
+      }, 2500))
     updateClients()
   }
 
