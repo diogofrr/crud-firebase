@@ -1,9 +1,8 @@
 export default function TableSkeleton() {
     return (
-        <>
-            <div className="h-14 bg-gray-200 rounded-xl w-full mb-2"></div>
-            <div className="h-96 bg-gray-200 rounded-xl w-full"></div>
-            <div className="h-72 bg-gray-200 rounded-xl w-full"></div>
-        </>
+        <div className="flex flex-col items-center justify-center">
+            <div className="h-10 bg-gray-200 rounded-xl w-40 mb-4 self-end"></div>
+            <div className="h-[80vh] bg-gray-200 w-full"></div>
+        </div>
     )
 }

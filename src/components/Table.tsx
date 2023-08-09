@@ -2,24 +2,25 @@ import Client from "@/core/Client"
 import Actions from "./Actions"
 import useModal from "@/hooks/useModal"
 import DeleteModal from "./DeleteModal"
-import { useState } from "react"
-import SnackBar from "./SnackBar"
-import { STATUS } from "@/types/global"
+import { useContext, useState } from "react"
+import { Context as StatusContext } from "@/contexts/Status/StatusContext"
 
 interface ITableProps {
   clients: Client[]
   editClient?: (client: Client) => void
   deleteClient?: (client: Client) => void
-  openSnackBar: boolean
-  message: string
-  status: STATUS
-  closeSnackBar: () => void
 }
 
-export default function Table({ clients, editClient, deleteClient, openSnackBar, closeSnackBar, message, status }: ITableProps) {
+export default function Table({ clients, editClient, deleteClient }: ITableProps) {
   const showActions = deleteClient || editClient
   const [client, setClient] = useState<Client>(Client.empty())
   const { handleCloseModal, handleOpenModal, openModal } = useModal()
+
+  const context = useContext(StatusContext)
+
+  if (context === null) return null
+
+  const { startLoading, stopLoading } = context
 
   function handleOpenDeleteModal(client: Client) {
     handleOpenModal()
@@ -32,6 +33,7 @@ export default function Table({ clients, editClient, deleteClient, openSnackBar,
   }
 
   function handleDeleteClient() {
+    startLoading('Excluindo cliente...')
     deleteClient?.(client)
   }
 
@@ -60,16 +62,17 @@ export default function Table({ clients, editClient, deleteClient, openSnackBar,
 
   return (
     <>
-      <SnackBar open={openSnackBar} message={message} type={status} closeSnackBar={closeSnackBar} />
       <DeleteModal open={openModal} handleCloseModal={handleCloseDeleteModal} deleteClient={handleDeleteClient} />
-      <table className="w-full rounded-xl overflow-hidden">
-        <thead className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-100">
-          {tableHeader()}
-        </thead>
-        <tbody>
-          {tableData()}
-        </tbody>
-      </table>
+      <div className="overflow-auto max-h-[80vh] h-auto">
+        <table className="w-full">
+          <thead className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-100">
+            {tableHeader()}
+          </thead>
+          <tbody>
+            {tableData()}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

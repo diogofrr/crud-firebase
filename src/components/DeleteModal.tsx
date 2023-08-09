@@ -1,6 +1,8 @@
 import Button from "./Button";
 import { ErrorIcon } from "./Icons";
 import Modal from "./Modal";
+import { useContext } from "react";
+import { Context as StatusContext } from "@/contexts/Status/StatusContext";
 
 interface IDeleteModalProps {
   open: boolean
@@ -10,13 +12,16 @@ interface IDeleteModalProps {
 
 export default function DeleteModal({ deleteClient, handleCloseModal, open }: IDeleteModalProps) {
 
+  const context = useContext(StatusContext)
+
   function handleDeleteClient() {
+    context?.startLoading('Excluindo cliente...')
     deleteClient()
     handleCloseModal()
   }
 
   return (
-    <Modal size={'w-2/6 h-2/6'} open={open}>
+    <Modal size={'w-[32rem] h-72'} open={open}>
       <div className="flex justify-center items-center flex-col gap-4">
         <ErrorIcon width="w-24" height="h-24" />
         <p className="text-black text-xl">Deseja excluir esse registro?</p>

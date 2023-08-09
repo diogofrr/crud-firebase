@@ -1,24 +1,35 @@
 import Client from "@/core/Client"
 import IClientRepo from "@/core/ClientRepo"
 import ClientCollection from "@/firebase/db/ClientCollection"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import useVisibility from "./useVisibility"
-import useStatus from "./useStatus"
+import { Context as StatusContext } from "@/contexts/Status/StatusContext"
 
 export default function useClients() {
   const repo: IClientRepo = new ClientCollection()
 
+  const { tableIsVisible, showForm, showTable } = useVisibility()
+
   const [client, setClient] = useState<Client>(Client.empty())
   const [clients, setClients] = useState<Client[]>([])
-  const { tableIsVisible, showForm, showTable } = useVisibility()
-  const { startLoading, stopLoading, status, message, openSnackBar, closeSnackBar } = useStatus()
 
-  useEffect(() => getAll(), [])
+  const context = useContext(StatusContext)
 
-  function getAll() {
+  useEffect(() => {
+    context?.startLoading('')
+    updateClients()
+    setTimeout(() => {
+      context?.stopLoading({
+        status: 'success',
+        message: ''
+      })
+    }, 1000)
+  }, [])
+
+  function updateClients() {
     repo.getAll().then(clients => {
-      setClients(clients)
       showTable()
+      setClients(clients)
     })
   }
 
@@ -33,19 +44,29 @@ export default function useClients() {
   }
 
   async function deleteClient(client: Client) {
-    startLoading('Excluindo conteúdo...')
     await repo.delete(client)
-      .then(() => stopLoading('success', 'Cliente excluído com sucesso!!'))
-      .catch(() => stopLoading('error', 'Falha ao excluir cliente.'))
-    getAll()
+      .then(() => context?.stopLoading({
+        status: 'success',
+        message: 'Cliente excluído com sucesso!!'
+      }))
+      .catch(() => context?.stopLoading({
+        status: 'error',
+        message: 'Falha ao excluir cliente.' 
+      }))
+    updateClients()
   }
 
   async function saveClient(client: Client) {
-    startLoading('Salvando conteúdo...')
     await repo.save(client)
-      .then(() => stopLoading('success', 'Cliente salvo com sucesso!!'))
-      .catch(() => stopLoading('error', 'Falha ao salvar cliente.'))
-    getAll()
+      .then(() => context?.stopLoading({
+        status: 'success',
+        message: 'Cliente salvo com sucesso!!'
+      }))
+      .catch(() => context?.stopLoading({ 
+        status: 'error',
+        message: 'Falha ao salvar cliente.'
+      }))
+    updateClients()
   }
 
   return {
@@ -57,9 +78,6 @@ export default function useClients() {
     editClient,
     deleteClient,
     showTable,
-    status,
-    message,
-    openSnackBar,
-    closeSnackBar
+    updateClients
   }
 }

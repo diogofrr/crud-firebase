@@ -17,7 +17,10 @@ export default function Actions({ client, editClient, handleOpenDeleteModal }: I
           <EditIcon className="w-6 h-6" />
         </button>
       }
-      <button onClick={handleOpenDeleteModal} className="flex justify-center item-center text-red-800 rounded-full hover:bg-purple-50 p-2 m-1">
+      <button 
+        onClick={handleOpenDeleteModal}
+        className="flex justify-center item-center text-red-800 rounded-full hover:bg-purple-50 p-2 m-1"
+      >
         <TrashIcon className="w-6 h-6" />
       </button>
     </td>

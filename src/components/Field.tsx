@@ -12,10 +12,11 @@ interface IFieldProps {
   errors: {
     [key: string]: string;
   }
+  placeholder?: string
   validation?: (value: any) => void
 }
 
-export default function Field({ text, type, value, readOnly = false, onChange, name, id, errors, validation }: IFieldProps) {
+export default function Field({ text, type, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "" }: IFieldProps) {
   return (
     <div className="flex flex-col mb-4">
       <label className="text-black mb-1 font-semibold">{text}</label>
@@ -37,6 +38,7 @@ export default function Field({ text, type, value, readOnly = false, onChange, n
         }}
         name={name}
         id={id}
+        placeholder={placeholder}
       />
       {errors[name] && <p className="text-red-600">{errors[name]}</p>}
     </div>
