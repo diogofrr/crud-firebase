@@ -19,7 +19,9 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
   const initialValues = {
     id: client?.id,
     name: client?.name ?? '',
-    age: client?.age ?? ''
+    birthday: client?.birthday ?? '',
+    tel: client?.tel ?? '',
+    email: client?.email ?? ''
   }
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
 
@@ -27,20 +29,24 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
 
   if (context === null) return null
 
-  const { startLoading, stopLoading, state: { status } } = context
+  const { startLoading, state: { status } } = context
 
   function handleSaveAndValidateClient() {
     startLoading('Salvando cliente...')
     handleValidate(() => {
       const updatedErrors = {
         name: '',
-        age: ''
+        birthday: '',
+        tel: '',
+        email: ''
       }
 
       updatedErrors.name = nameFieldValidation(values.name).name
-      updatedErrors.age = ageFieldValidation(+values.age).age
+      updatedErrors.birthday = birthdatFieldValidation(values.birthday).birthday
+      updatedErrors.tel = telFieldValidation(values.tel).tel
+      updatedErrors.email = emailFieldValidation(values.email).email
 
-      if (Object.values(updatedErrors).every(error => error === '')) saveClient?.(new Client(values.name, +values.age, values.id))
+      if (Object.values(updatedErrors).every(error => error === '')) saveClient?.(new Client(values.name, new Date(values.birthday), values.tel, values.email, values.id))
     
       return updatedErrors
     })
@@ -58,15 +64,26 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
     return updatedErrors
   }
 
-  function ageFieldValidation(value: number) {
+  function birthdatFieldValidation(value: Date) {
     const updatedErrors = errors
-    value = +value
 
-    if (value <= 0 || value > 120 || !Number.isInteger(value) || isNaN(value)) {
-      updatedErrors.age = 'Por favor, insira uma idade válida.'
+    if (value >= new Date()) {
+      updatedErrors.birthday = 'Por favor, insira uma data válida.'
     } else {
-      updatedErrors.age = ''
+      updatedErrors.birthday = ''
     }
+
+    return updatedErrors
+  }
+
+  function telFieldValidation(value: string) {
+    const updatedErrors = errors
+
+    return updatedErrors
+  }
+  
+  function emailFieldValidation(value: string) {
+    const updatedErrors = errors
 
     return updatedErrors
   }
@@ -97,15 +114,36 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
           placeholder="Digite o nome do cliente"
         />
         <Field
-          text="Idade"
-          type="number"
-          value={values.age}
+          text="Data de nascimento"
+          type="date"
+          value={values.birthday}
           onChange={handleChangeValue}
-          name="age"
-          id="ageField"
+          name="birthday"
+          id="birthdayField"
           errors={errors}
-          validation={ageFieldValidation}
-          placeholder="Digite a idade do cliente"
+          validation={birthdatFieldValidation}
+        />
+        <Field
+          text="Telefone"
+          type="tel"
+          value={values.tel}
+          onChange={handleChangeValue}
+          name="tel"
+          id="telField"
+          errors={errors}
+          validation={telFieldValidation}
+          placeholder="Insira o telefone do cliente"
+        />
+        <Field
+          text="Email"
+          type="email"
+          value={values.email}
+          onChange={handleChangeValue}
+          name="email"
+          id="emailField"
+          errors={errors}
+          validation={emailFieldValidation}
+          placeholder="Insira o email do cliente"
         />
         <div className="flex justify-end mt-7">
           <Button

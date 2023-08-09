@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface FormValues {
-  [key: string]: string | number;
+  [key: string]: string | number | Date;
 }
 
 interface FormErrors {
