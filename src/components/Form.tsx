@@ -7,7 +7,7 @@ import useFormValidation from "@/hooks/useFormValidation";
 import { STATUS } from "@/types/global";
 import { Spinner } from "@/components/Icons"
 import { useContext } from "react";
-import { Context as StatusContext } from "@/contexts/Status/StatusContext"
+import { StatusContext } from "@/contexts/Status/StatusContext"
 
 interface IFormProps {
   client: Client

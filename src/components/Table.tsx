@@ -3,7 +3,7 @@ import Actions from "./Actions"
 import useModal from "@/hooks/useModal"
 import DeleteModal from "./DeleteModal"
 import { useContext, useState } from "react"
-import { Context as StatusContext } from "@/contexts/Status/StatusContext"
+import { StatusContext } from "@/contexts/Status/StatusContext"
 
 interface ITableProps {
   clients: Client[]

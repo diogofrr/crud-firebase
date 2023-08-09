@@ -1,7 +1,7 @@
-import Cliente from "./Client"
+import Client from "./Client"
 
 export default interface IClientRepo {
-  save(client: Cliente): Promise<Cliente>
-  delete(client: Cliente): Promise<void>
-  getAll(): Promise<Cliente[]>
+  save(client: Client): Promise<Client>
+  delete(client: Client): Promise<void>
+  getAll(): Promise<Client[]>
 }

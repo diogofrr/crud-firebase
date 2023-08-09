@@ -2,7 +2,7 @@ import Button from "./Button";
 import { ErrorIcon } from "./Icons";
 import Modal from "./Modal";
 import { useContext } from "react";
-import { Context as StatusContext } from "@/contexts/Status/StatusContext";
+import { StatusContext } from "@/contexts/Status/StatusContext";
 
 interface IDeleteModalProps {
   open: boolean

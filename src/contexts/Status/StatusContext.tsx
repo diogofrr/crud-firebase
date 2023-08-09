@@ -16,9 +16,9 @@ interface IStatusContextType {
   closeSnackBar: () => void
 }
 
-export const Context = createContext<IStatusContextType | null>(null);
+export const StatusContext = createContext<IStatusContextType | null>(null);
 
-const StatusContext = ({ children }: IStatusContextProps) => {
+const StatusProvider = ({ children }: IStatusContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const startLoading = (payload: string) => {
@@ -54,10 +54,10 @@ const StatusContext = ({ children }: IStatusContextProps) => {
   };
 
   return (
-    <Context.Provider value={contextValue}>
+    <StatusContext.Provider value={contextValue}>
       {children}
-    </Context.Provider>
+    </StatusContext.Provider>
   );
 };
 
-export default StatusContext;
+export default StatusProvider;

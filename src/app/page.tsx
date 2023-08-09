@@ -7,7 +7,7 @@ import SnackBar from "@/components/SnackBar";
 import Table from "@/components/Table";
 import TableSkeleton from "@/components/TableSkeleton";
 import { useContext } from "react";
-import { Context as StatusContext } from "@/contexts/Status/StatusContext";
+import { StatusContext } from "@/contexts/Status/StatusContext";
 import useClients from "@/hooks/useClients";
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
 
   const context = useContext(StatusContext)
 
-  if (context === null) return null
+  if (context === null) return <div className="bg-pink-700"> oi</div>
 
   const { closeSnackBar, state: { status, snackbarOpen, message } } = context
 

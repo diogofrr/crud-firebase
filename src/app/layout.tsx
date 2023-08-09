@@ -1,6 +1,4 @@
-'use client'
-
-import StatusContext from '@/contexts/Status/StatusContext'
+import Provider from '@/components/Provider'
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
 
@@ -20,9 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex h-screen justify-center items-center`} cz-shortcut-listen="false">
         <main className="h-full w-full bg-white">
-          <StatusContext>
+          <Provider>
             {children}
-          </StatusContext>
+          </Provider>
         </main>
       </body>
     </html>

@@ -3,7 +3,7 @@ import IClientRepo from "@/core/ClientRepo"
 import ClientCollection from "@/firebase/db/ClientCollection"
 import { useState, useEffect, useContext } from "react"
 import useVisibility from "./useVisibility"
-import { Context as StatusContext } from "@/contexts/Status/StatusContext"
+import { StatusContext } from "@/contexts/Status/StatusContext"
 
 export default function useClients() {
   const repo: IClientRepo = new ClientCollection()
@@ -53,6 +53,11 @@ export default function useClients() {
         status: 'error',
         message: 'Falha ao excluir cliente.' 
       }))
+      .finally(() => {
+        setTimeout(() => {
+          context?.resetStatus()
+        }, 2500)
+      })
     updateClients()
   }
 
@@ -66,6 +71,11 @@ export default function useClients() {
         status: 'error',
         message: 'Falha ao salvar cliente.'
       }))
+      .finally(() => {
+        setTimeout(() => {
+          context?.resetStatus()
+        }, 2500)
+      })
     updateClients()
   }
 
