@@ -8,6 +8,7 @@ import { STATUS } from "@/types/global";
 import { Spinner } from "@/components/Icons"
 import { useContext } from "react";
 import { Context as StatusContext } from "@/contexts/Status/StatusContext"
+import { formatDateToYYYYMMDD, parseDateString } from "@/utils/formatDate";
 
 interface IFormProps {
   client: Client
@@ -19,7 +20,7 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
   const initialValues = {
     id: client?.id,
     name: client?.name ?? '',
-    birthday: client?.birthday ?? '',
+    birthday: client?.birthday ?? formatDateToYYYYMMDD(new Date()),
     tel: client?.tel ?? '',
     email: client?.email ?? ''
   }
@@ -32,7 +33,7 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
   const { startLoading, state: { status } } = context
 
   function handleSaveAndValidateClient() {
-    startLoading('Salvando cliente...')
+    // startLoading('Salvando cliente...')
     handleValidate(() => {
       const updatedErrors = {
         name: '',
@@ -41,12 +42,16 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
         email: ''
       }
 
+      if (typeof values.birthday === 'string') {
+        console.log(values.birthday)
+      }
+
       updatedErrors.name = nameFieldValidation(values.name).name
       updatedErrors.birthday = birthdatFieldValidation(values.birthday).birthday
       updatedErrors.tel = telFieldValidation(values.tel).tel
       updatedErrors.email = emailFieldValidation(values.email).email
 
-      if (Object.values(updatedErrors).every(error => error === '')) saveClient?.(new Client(values.name, new Date(values.birthday), values.tel, values.email, values.id))
+      //if (Object.values(updatedErrors).every(error => error === '')) saveClient?.(new Client(values.name, new Date(values.birthday), values.tel, values.email, values.id))
     
       return updatedErrors
     })
@@ -64,10 +69,12 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
     return updatedErrors
   }
 
-  function birthdatFieldValidation(value: Date) {
+  function birthdatFieldValidation(value: string) {
     const updatedErrors = errors
 
-    if (value >= new Date()) {
+    const updatedValue = parseDateString(value)
+
+    if (updatedValue >= new Date()) {
       updatedErrors.birthday = 'Por favor, insira uma data válida.'
     } else {
       updatedErrors.birthday = ''
