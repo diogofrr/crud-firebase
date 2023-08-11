@@ -22,3 +22,10 @@ export function parseDateString(dateString: string) {
 
   return new Date(year, month, day);
 }
+
+export function timestampToDate(timestamp: any) {
+  const milliseconds = timestamp.seconds * 1000;
+  const date = new Date(milliseconds)
+
+  return date
+}

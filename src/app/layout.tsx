@@ -1,5 +1,3 @@
-'use client'
-
 import StatusContext from '@/contexts/Status/StatusContext'
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'

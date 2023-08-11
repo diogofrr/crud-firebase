@@ -4,7 +4,7 @@ import useModal from "@/hooks/useModal"
 import DeleteModal from "./DeleteModal"
 import { useContext, useState } from "react"
 import { Context as StatusContext } from "@/contexts/Status/StatusContext"
-import { formatDateToDDMMYYYY } from "@/utils/formatDate"
+import { formatDateToDDMMYYYY, timestampToDate } from "@/utils/formatDate"
 
 interface ITableProps {
   clients: Client[]
@@ -21,7 +21,7 @@ export default function Table({ clients, editClient, deleteClient }: ITableProps
 
   if (context === null) return null
 
-  const { startLoading, stopLoading } = context
+  const { startLoading } = context
 
   function handleOpenDeleteModal(client: Client) {
     handleOpenModal()
@@ -53,7 +53,8 @@ export default function Table({ clients, editClient, deleteClient }: ITableProps
 
   function tableData() {
     return clients.map((client, index) => {
-        const birthday = formatDateToDDMMYYYY(client.birthday)
+        const birthday = formatDateToDDMMYYYY(timestampToDate(client.birthday))
+
         return (
           <tr key={client.id} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}`}>
             <td className="text-left p-4 text-gray-950">{client.id}</td>

@@ -16,7 +16,7 @@ export default class ClientCollection implements IClientRepo {
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: any) {
       const { name, birthday, email, tel } = snapshot.data(options);
-      return new Client(name, birthday, email, tel, snapshot.id);
+      return new Client(name, birthday, tel, email, snapshot.id);
     }
   };
   
@@ -31,7 +31,7 @@ export default class ClientCollection implements IClientRepo {
       return client
     } else {
       const clienteRef = await addDoc(this.clientCollection(), client);
-      return new Client(client.name, client.birthday, client.email, client.tel, clienteRef.id);
+      return new Client(client.name, client.birthday, client.tel, client.email, clienteRef.id);
     }
   }
 
