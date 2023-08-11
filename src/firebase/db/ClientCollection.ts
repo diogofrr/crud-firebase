@@ -6,15 +6,17 @@ import { QueryDocumentSnapshot, addDoc, collection, deleteDoc, doc, getDocs, set
 export default class ClientCollection implements IClientRepo {
 
   #conversor = {
-    toFirestore({ name, age }: Client) {
+    toFirestore({ name, birthday, email, tel }: Client) {
       return {
         name,
-        age
+        birthday,
+        email,
+        tel
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: any) {
-      const { name, age } = snapshot.data(options);
-      return new Client(name, age, snapshot.id);
+      const { name, birthday, email, tel } = snapshot.data(options);
+      return new Client(name, birthday, tel, email, snapshot.id);
     }
   };
   
@@ -29,7 +31,7 @@ export default class ClientCollection implements IClientRepo {
       return client
     } else {
       const clienteRef = await addDoc(this.clientCollection(), client);
-      return new Client(client.name, client.age, clienteRef.id);
+      return new Client(client.name, client.birthday, client.tel, client.email, clienteRef.id);
     }
   }
 

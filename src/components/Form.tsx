@@ -8,6 +8,7 @@ import { STATUS } from "@/types/global";
 import { Spinner } from "@/components/Icons"
 import { useContext } from "react";
 import { StatusContext } from "@/contexts/Status/StatusContext"
+import { formatDateToYYYYMMDD, parseDateString, timestampToDate } from "@/utils/formatDate";
 
 interface IFormProps {
   client: Client
@@ -19,8 +20,11 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
   const initialValues = {
     id: client?.id,
     name: client?.name ?? '',
-    age: client?.age ?? ''
+    birthday: formatDateToYYYYMMDD(timestampToDate(client?.birthday)) ?? new Date(),
+    tel: client?.tel ?? '',
+    email: client?.email ?? ''
   }
+
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
 
   const context = useContext(StatusContext)
@@ -34,13 +38,24 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
     handleValidate(() => {
       const updatedErrors = {
         name: '',
-        age: ''
+        birthday: '',
+        tel: '',
+        email: ''
       }
 
       updatedErrors.name = nameFieldValidation(values.name).name
-      updatedErrors.age = ageFieldValidation(+values.age).age
+      updatedErrors.birthday = birthdatFieldValidation(values.birthday.toString()).birthday
+      updatedErrors.tel = telFieldValidation(values.tel).tel
+      updatedErrors.email = emailFieldValidation(values.email).email
 
-      if (Object.values(updatedErrors).every(error => error === '')) saveClient?.(new Client(values.name, +values.age, values.id))
+      if (Object.values(updatedErrors).every(error => error === '')) {
+        saveClient?.(new Client(values.name, parseDateString(values.birthday.toString()), values.tel, values.email, values.id))
+      }  else {
+        stopLoading({
+          status: "error",
+          message: "Preencha os campos corretamente."
+        })
+      }
     
       return updatedErrors
     })
@@ -58,14 +73,39 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
     return updatedErrors
   }
 
-  function ageFieldValidation(value: number) {
+  function birthdatFieldValidation(value: string) {
     const updatedErrors = errors
-    value = +value
 
-    if (value <= 0 || value > 120 || !Number.isInteger(value) || isNaN(value)) {
-      updatedErrors.age = 'Por favor, insira uma idade válida.'
+    const updatedValue = parseDateString(value)
+
+    if (updatedValue >= new Date() || updatedValue.toString() === "Invalid Date") {
+      updatedErrors.birthday = 'Por favor, insira uma data válida.'
     } else {
-      updatedErrors.age = ''
+      updatedErrors.birthday = ''
+    }
+
+    return updatedErrors
+  }
+
+  function telFieldValidation(value: string) {
+    const updatedErrors = errors
+
+    if (value === '') {
+      updatedErrors.tel = 'Por favor, insira um telefone válido.'
+    } else {
+      updatedErrors.tel = ''
+    }
+
+    return updatedErrors
+  }
+  
+  function emailFieldValidation(value: string) {
+    const updatedErrors = errors
+
+    if (value === '') {
+      updatedErrors.email = 'Por favor, insira um email válido.'
+    } else {
+      updatedErrors.email = ''
     }
 
     return updatedErrors
@@ -97,20 +137,41 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
           placeholder="Digite o nome do cliente"
         />
         <Field
-          text="Idade"
-          type="number"
-          value={values.age}
+          text="Data de nascimento"
+          type="date"
+          value={values.birthday}
           onChange={handleChangeValue}
-          name="age"
-          id="ageField"
+          name="birthday"
+          id="birthdayField"
           errors={errors}
-          validation={ageFieldValidation}
-          placeholder="Digite a idade do cliente"
+          validation={birthdatFieldValidation}
+        />
+        <Field
+          text="Telefone"
+          type="tel"
+          value={values.tel}
+          onChange={handleChangeValue}
+          name="tel"
+          id="telField"
+          errors={errors}
+          validation={telFieldValidation}
+          placeholder="Insira o telefone do cliente"
+        />
+        <Field
+          text="Email"
+          type="email"
+          value={values.email}
+          onChange={handleChangeValue}
+          name="email"
+          id="emailField"
+          errors={errors}
+          validation={emailFieldValidation}
+          placeholder="Insira o email do cliente"
         />
         <div className="flex justify-end mt-7">
           <Button
             type="submit"
-            color="green"
+            color={status === 'loading' ? 'gray' : 'green'}
             className="mr-2"
             disabled={status === 'loading'}
           >

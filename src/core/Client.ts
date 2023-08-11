@@ -1,16 +1,20 @@
 export default class Client {
   #id: string
   #name: string
-  #age: number
+  #birthday: Date
+  #tel: string
+  #email: string
 
-  constructor(name: string, age: number, id: string = '') {
+  constructor(name: string, birthday: Date, tel: string, email: string, id: string = '') {
     this.#id = id
     this.#name = name
-    this.#age = age
+    this.#birthday = birthday
+    this.#tel = tel
+    this.#email = email
   }
 
   static empty() {
-    return new Client('', 0)
+    return new Client('', new Date(), '', '')
   }
 
   get id() {
@@ -21,7 +25,15 @@ export default class Client {
     return this.#name
   }
 
-  get age() {
-    return this.#age
+  get birthday() {
+    return this.#birthday
+  }
+
+  get tel() {
+    return this.#tel
+  }
+
+  get email() {
+    return this.#email
   }
 }

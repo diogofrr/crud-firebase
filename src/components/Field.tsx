@@ -2,21 +2,23 @@
 
 interface IFieldProps {
   text: string
-  type: 'text' | 'number'
-  value: any
+  type: 'text' | 'number' | 'date' | 'tel' | 'email'
+  value?: any
   readOnly?: boolean
   onChange?: (e: React.ChangeEvent<HTMLInputElement>, validation?: () => void) => void
   name: string
   id: string
   min?: string
+  max?: string
   errors: {
     [key: string]: string;
   }
   placeholder?: string
   validation?: (value: any) => void
+  defaultValue?: any
 }
 
-export default function Field({ text, type, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "" }: IFieldProps) {
+export default function Field({ text, type, defaultValue, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "", min = "", max = "" }: IFieldProps) {
   return (
     <div className="flex flex-col mb-4">
       <label className="text-black mb-1 font-semibold">{text}</label>
@@ -31,7 +33,10 @@ export default function Field({ text, type, value, readOnly = false, onChange, n
         `}
         type={type}
         value={value}
+        defaultValue={defaultValue}
         readOnly={readOnly}
+        min={min}
+        max={max}
         onChange={(e) => {
           onChange?.(e)
           validation?.(e.target.value)
