@@ -1,7 +1,7 @@
 import Button from "./Button";
 import { ErrorIcon } from "./Icons";
 import Modal from "./Modal";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { StatusContext } from "@/contexts/Status/StatusContext";
 
 interface IDeleteModalProps {
@@ -14,11 +14,11 @@ export default function DeleteModal({ deleteClient, handleCloseModal, open }: ID
 
   const context = useContext(StatusContext)
 
-  function handleDeleteClient() {
+  const handleDeleteClient = useCallback(() => {
     context?.startLoading('Excluindo cliente...')
     deleteClient()
     handleCloseModal()
-  }
+  }, [context, deleteClient, handleCloseModal])
 
   return (
     <Modal size={'w-[32rem] h-72'} open={open}>
