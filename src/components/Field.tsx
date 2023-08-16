@@ -5,7 +5,7 @@ interface IFieldProps {
   type: 'text' | 'number' | 'date' | 'tel' | 'email'
   value?: any
   readOnly?: boolean
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>, validation?: () => void) => void
+  onChange?: (e: React.FormEvent<HTMLInputElement>, validation?: () => void) => void
   name: string
   id: string
   min?: string

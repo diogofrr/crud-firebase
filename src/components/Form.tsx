@@ -139,7 +139,7 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
         <Field
           text="Data de nascimento"
           type="date"
-          value={values.birthday}
+          defaultValue={values.birthday}
           onChange={handleChangeValue}
           name="birthday"
           id="birthdayField"

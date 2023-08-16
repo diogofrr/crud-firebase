@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface FormValues {
   [key: string]: string | number | Date;
@@ -12,25 +12,25 @@ export default function useFormValidation<T extends FormValues>(initialValues: T
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState<FormErrors>({})
 
-  function handleChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
-    const fieldName: string | null = event.target.getAttribute('name')
-    const { value } = event.target
+  const handleChangeValue = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+    const fieldName: string | null = event.currentTarget.getAttribute('name')
+    const { value } = event.currentTarget
     if (fieldName) {
       setValues({
         ...values,
         [fieldName]: value,
       })
     }
-  }
+  }, [values])
 
-  function handleValidate(validate: () => FormErrors) {
+  const handleValidate = useCallback((validate: () => FormErrors) => {
     setErrors(validate)
-  }
+  }, [])
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>, callback: () => void) {
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>, callback: () => void) => {
     e.preventDefault()
     callback()
-  }
+  }, [])
 
   return {
     values,

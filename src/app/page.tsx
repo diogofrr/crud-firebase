@@ -32,7 +32,7 @@ export default function Home() {
     <>
       <SnackBar open={snackbarOpen} message={message} type={status} closeSnackBar={closeSnackBar} />
       <Header />
-      <section className="px-8 py-4">
+      <section className="px-4 py-4">
         {tableIsVisible ? (
           <>
             {status === 'loading' ? (

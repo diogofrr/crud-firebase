@@ -1,12 +1,12 @@
 import Client from "@/core/Client"
 import IClientRepo from "@/core/ClientRepo"
 import ClientCollection from "@/firebase/db/ClientCollection"
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useCallback, useMemo } from "react"
 import useVisibility from "./useVisibility"
 import { StatusContext } from "@/contexts/Status/StatusContext"
 
 export default function useClients() {
-  const repo: IClientRepo = new ClientCollection()
+  const repo: IClientRepo = useMemo(() => new ClientCollection(), [])
 
   const { tableIsVisible, showForm, showTable } = useVisibility()
 
@@ -14,6 +14,13 @@ export default function useClients() {
   const [clients, setClients] = useState<Client[]>([])
 
   const context = useContext(StatusContext)
+  
+  const updateClients = useCallback(() => {
+    repo.getAll().then(clients => {
+      showTable()
+      setClients(clients)
+    })
+  }, [repo, showTable])
 
   useEffect(() => {
     context?.startLoading('')
@@ -26,24 +33,18 @@ export default function useClients() {
     }, 1000)
   }, [])
 
-  function updateClients() {
-    repo.getAll().then(clients => {
-      showTable()
-      setClients(clients)
-    })
-  }
 
-  function newClient() {
+  const newClient = useCallback(() => {
     setClient(Client.empty())
     showForm()
-  }
+  }, [showForm])
 
-  function editClient(client: Client) {
+  const editClient = useCallback((client: Client) => {
     setClient(client)
     showForm()
-  }
+  }, [showForm])
 
-  async function deleteClient(client: Client) {
+  const deleteClient = useCallback(async (client: Client) => {
     await repo.delete(client)
       .then(() => context?.stopLoading({
         status: 'success',
@@ -57,9 +58,9 @@ export default function useClients() {
         context?.resetStatus()
       }, 2500))
     updateClients()
-  }
+  }, [context, repo, updateClients])
 
-  async function saveClient(client: Client) {
+  const saveClient = useCallback(async (client: Client) => {
     await repo.save(client)
       .then(() => context?.stopLoading({
         status: 'success',
@@ -73,7 +74,7 @@ export default function useClients() {
         context?.resetStatus()
       }, 2500))
     updateClients()
-  }
+  }, [context, repo, updateClients])
 
   return {
     client,
