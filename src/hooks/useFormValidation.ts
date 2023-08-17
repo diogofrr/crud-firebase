@@ -4,7 +4,7 @@ interface FormValues {
   [key: string]: string | number | Date;
 }
 
-interface FormErrors {
+export interface FormErrors {
   [key: string]: string;
 }
 
@@ -12,13 +12,16 @@ export default function useFormValidation<T extends FormValues>(initialValues: T
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState<FormErrors>({})
 
-  const handleChangeValue = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+  const handleChangeValue = useCallback((
+    event: React.FormEvent<HTMLInputElement>,
+    inputMaskValue: string | null
+  ) => {
     const fieldName: string | null = event.currentTarget.getAttribute('name')
     const { value } = event.currentTarget
     if (fieldName) {
       setValues({
         ...values,
-        [fieldName]: value,
+        [fieldName]: inputMaskValue ?? value,
       })
     }
   }, [values])

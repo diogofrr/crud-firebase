@@ -1,24 +1,25 @@
 'use client'
 
+import { FormErrors } from "@/hooks/useFormValidation"
+
 interface IFieldProps {
   text: string
   type: 'text' | 'number' | 'date' | 'tel' | 'email'
   value?: any
   readOnly?: boolean
-  onChange?: (e: React.FormEvent<HTMLInputElement>, validation?: () => void) => void
+  onChange?: (e: React.FormEvent<HTMLInputElement>, inputMaskValue: string | null) => void
   name: string
   id: string
   min?: string
   max?: string
-  errors: {
-    [key: string]: string;
-  }
   placeholder?: string
-  validation?: (value: any) => void
+  validation?: (errors: FormErrors, value: any) => void
   defaultValue?: any
+  inputMask?: (event: React.FormEvent<HTMLInputElement>) => string
+  errors: FormErrors
 }
 
-export default function Field({ text, type, defaultValue, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "", min = "", max = "" }: IFieldProps) {
+export default function Field({ text, type, defaultValue, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "", min = "", max = "", inputMask }: IFieldProps) {
   return (
     <div className="flex flex-col mb-4">
       <label className="text-black mb-1 font-semibold">{text}</label>
@@ -38,8 +39,8 @@ export default function Field({ text, type, defaultValue, value, readOnly = fals
         min={min}
         max={max}
         onChange={(e) => {
-          onChange?.(e)
-          validation?.(e.target.value)
+          onChange?.(e, inputMask?.(e) ?? null)
+          validation?.(errors, e.target.value)
         }}
         name={name}
         id={id}
