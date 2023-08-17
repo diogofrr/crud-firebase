@@ -9,6 +9,7 @@ import TableSkeleton from "@/components/TableSkeleton";
 import { useContext } from "react";
 import { StatusContext } from "@/contexts/Status/StatusContext";
 import useClients from "@/hooks/useClients";
+import SideMenu from "@/components/SideMenu";
 
 export default function Home() {
   const {
@@ -29,42 +30,8 @@ export default function Home() {
   const { closeSnackBar, state: { status, snackbarOpen, message } } = context
 
   return (
-    <>
-      <SnackBar open={snackbarOpen} message={message} type={status} closeSnackBar={closeSnackBar} />
-      <Header />
-      <section className="px-4 py-4">
-        {tableIsVisible ? (
-          <>
-            {status === 'loading' ? (
-              <TableSkeleton />
-            ) : (
-              <>
-                <div className="flex justify-end">
-                  <Button
-                    onClick={newClient}
-                    className="mb-4"
-                    color="gray"
-                  >
-                    + NOVO CLIENTE
-                  </Button>
-                </div>
-                <Table
-                  clients={clients}
-                  editClient={editClient}
-                  deleteClient={deleteClient}
-                />
-              </>
-            )}
-          </>
-        ) : (
-          <Form
-            client={client}
-            cancel={showTable}
-            saveClient={saveClient}
-            status={status}
-          />
-        )}
-      </section>
-    </>
+    <main className="bg-titanWhite">
+      <SideMenu />
+    </main>
   )
 }
