@@ -10,6 +10,10 @@ import { useContext } from "react";
 import { StatusContext } from "@/contexts/Status/StatusContext";
 import useClients from "@/hooks/useClients";
 import SideMenu from "@/components/SideMenu";
+import { PlusIcon } from "@/components/Icons";
+import TotalClients from "@/components/TotalClients";
+import Birthdays from "@/components/Birthdays";
+import Calendar from "@/components/Calendar";
 
 export default function Home() {
   const {
@@ -30,8 +34,27 @@ export default function Home() {
   const { closeSnackBar, state: { status, snackbarOpen, message } } = context
 
   return (
-    <main className="bg-titanWhite">
+    <section className="bg-titanWhite flex">
       <SideMenu />
-    </main>
+      <section className="w-full mr-4 ml-72">
+        <Header />
+        <main className="flex flex-wrap">
+          <section className="p-4 bg-white overflow-auto rounded-xl shadow-xl mr-4">
+            <div className="mb-2">
+              <Button color="hippieGreen">
+                <PlusIcon width="w-5" height="h-5" className="mr-1 text-white stroke-2" />
+                CADASTRAR NOVO USUÁRIO
+              </Button>
+            </div>
+            <Table clients={clients} deleteClient={deleteClient} editClient={editClient}  />
+          </section>
+          <section>
+            <TotalClients clientsLength={clients.length} />
+            <Birthdays clients={clients} status={status} />
+            <Calendar clients={clients} />
+          </section>
+        </main>
+      </section>
+    </section>
   )
 }

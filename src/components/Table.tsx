@@ -52,16 +52,16 @@ export default function Table({ clients, editClient, deleteClient }: ITableProps
   }
 
   function tableData() {
-    return clients.map((client, index) => {
+    return clients.map((client) => {
         const birthday = formatDateToDDMMYYYY(timestampToDate(client.birthday))
 
         return (
-          <tr key={client.id} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}`}>
-            <td className="text-left p-4 text-gray-950">{client.id}</td>
-            <td className="text-left p-4 text-gray-950">{client.name}</td>
-            <td className="text-left p-4 text-gray-950">{birthday}</td>
-            <td className="text-left p-4 text-gray-950">{client.tel}</td>
-            <td className="text-left p-4 text-gray-950">{client.email}</td>
+          <tr key={client.id} className={'bg-white'}>
+            <td className="text-left p-4 text-tuna">{client.id}</td>
+            <td className="text-left p-4 text-tuna">{client.name}</td>
+            <td className="text-left p-4 text-tuna">{birthday}</td>
+            <td className="text-left p-4 text-tuna">{client.tel}</td>
+            <td className="text-left p-4 text-tuna">{client.email}</td>
             {showActions && <Actions client={client} editClient={editClient} handleOpenDeleteModal={() => handleOpenDeleteModal(client)} />}
           </tr>
         )
@@ -73,8 +73,8 @@ export default function Table({ clients, editClient, deleteClient }: ITableProps
     <>
       <DeleteModal open={openModal} handleCloseModal={handleCloseDeleteModal} deleteClient={handleDeleteClient} />
       <div className="overflow-auto max-h-[80vh] h-auto">
-        <table className="w-full">
-          <thead className="bg-gradient-to-r from-gray-950 to-gray-900 text-gray-100">
+        <table className="rounded-t-2xl overflow-hidden">
+          <thead className="text-white bg-chetwodeBlue rounded-t-2xl">
             {tableHeader()}
           </thead>
           <tbody>

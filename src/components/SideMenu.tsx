@@ -16,7 +16,7 @@ export default function SideMenu() {
   }
 
   return (
-    <aside className="h-screen bg-white w-56 p-5 rounded-r-2xl">
+    <aside className="h-screen bg-white w-[17rem] p-5 rounded-r-2xl shadow-xl fixed">
         <div className="flex items-center content-center flex-col">
           <span className="mt-12">
             <UserIcon width="w-32" height="h-32" className="text-tuna stroke-1" />
@@ -28,7 +28,7 @@ export default function SideMenu() {
             <UserIcon className="mr-2" />
             Início
           </MenuItem>
-          <hr className="text-tuna my-4 border-2 rounded-xl" />
+          <hr className="text-tuna border-tuna my-4 border-2 rounded-xl" />
           <MenuItem className="mb-4">
             <ConfigIcon className="mr-2" />
             Configurações

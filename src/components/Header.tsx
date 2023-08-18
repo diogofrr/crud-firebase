@@ -1,8 +1,13 @@
+import { ChevronDownIcon } from "./Icons";
+
 export default function Header() {
   return (
-    <header>
-      <h1 className="py-4 px-8 text-3xl font-medium text-slate-950">CADASTRO DE USUÁRIOS</h1>
-      <hr className="border-2 border-gray-500"/>
+    <header className="flex justify-end items-center py-8">
+      <span className="cursor-pointer flex justify-end items-center">
+        <span className="w-8 h-8 bg-white rounded-full mr-2"></span>
+        <p className="text-tuna mr-2">Diogo F.</p>
+        <ChevronDownIcon width="w-4" height="h-4" className="text-tuna stroke-2" />
+      </span>
     </header>
   )
 }
