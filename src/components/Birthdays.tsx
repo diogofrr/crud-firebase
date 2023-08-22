@@ -33,9 +33,10 @@ export default function Birthdays({ clients, status }: IBirthdaysProps) {
   }
 
   return (
-    <div className="bg-white overflow-y-auto overflow-x-hidden max-h-96 w-56 p-2 shadow-xl rounded-2xl mb-4 flex flex-col items-center">
-      <p className="text-tuna font-medium text-lg mt-7 mb-4">&#127874; Aniversariantes ({filteredClients.length})</p>
-      {filteredClients.map((client) => {
+    <div className="bg-white overflow-y-auto overflow-x-hidden max-h-96 w-56 p-2 shadow-xl rounded-2xl mb-4 flex flex-col items-center py-6">
+      <p className="text-tuna font-medium text-lg mb-4">&#127874; Aniversariantes {filteredClients.length !== 0 && `(${filteredClients.length})`}</p>
+      {filteredClients.length !== 0 ? (
+        filteredClients.map((client) => {
         let clientNameString
         const clientNameArray = client.name.split(' ')
         const clientBirthday = formatDateToDDMMYYYY(timestampToDate(client.birthday)).split('/')
@@ -49,7 +50,9 @@ export default function Birthdays({ clients, status }: IBirthdaysProps) {
         return (
           <Item key={client.id}>{`${clientNameString} - ${clientBirthday[0]}/${clientBirthday[1]}`}</Item>
         )
-      })}
+      })) : (
+        <p className="text-gray-700 text-center">Sem bolo esse mês &#128577;</p>
+      )}
     </div>
   )
 }

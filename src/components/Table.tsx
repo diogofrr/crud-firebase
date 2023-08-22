@@ -5,6 +5,7 @@ import DeleteModal from "./DeleteModal"
 import { useContext, useState } from "react"
 import { StatusContext } from "@/contexts/Status/StatusContext"
 import { formatDateToDDMMYYYY, timestampToDate } from "@/utils/formatDate"
+import { InboxIcon } from "./Icons"
 
 interface ITableProps {
   clients: Client[]
@@ -72,15 +73,22 @@ export default function Table({ clients, editClient, deleteClient }: ITableProps
   return (
     <>
       <DeleteModal open={openModal} handleCloseModal={handleCloseDeleteModal} deleteClient={handleDeleteClient} />
-      <div className="overflow-auto max-h-[80vh] h-auto">
-        <table className="rounded-t-2xl overflow-hidden">
-          <thead className="text-white bg-chetwodeBlue rounded-t-2xl">
-            {tableHeader()}
-          </thead>
-          <tbody>
-            {tableData()}
-          </tbody>
-        </table>
+      <div className={`overflow-auto h-auto min-h-[70vh] max-h-[70vh] min-w-[1280px]  ${clients.length === 0 && "flex items-center justify-center"}`}>
+        {clients.length > 0 ? (
+          <table className="rounded-t-2xl overflow-hidden w-full">
+            <thead className="text-white bg-chetwodeBlue rounded-t-2xl">
+              {tableHeader()}
+            </thead>
+            <tbody>
+              {tableData()}
+            </tbody>
+          </table>
+        ) : (
+          <div className="flex flex-col justify-center items-center">
+            <InboxIcon width="w-12" height="h-12" className="text-gray-400" />
+            <p className="text-gray-400 text-center text-xl">Ainda não há registros</p>
+          </div>
+        )}
       </div>
     </>
   )

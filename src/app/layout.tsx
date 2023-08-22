@@ -16,12 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex h-screen justify-center items-center`} cz-shortcut-listen="false">
-        <main className="h-full w-full bg-white">
-          <Provider>
-            {children}
-          </Provider>
-        </main>
+      <body className={`${inter.className}`} cz-shortcut-listen="false">
+        <Provider>
+          {children}
+        </Provider>
       </body>
     </html>
   )

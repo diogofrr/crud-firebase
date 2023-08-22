@@ -74,7 +74,7 @@ export default function Calendar({ clients }: ICalendarProps) {
   }
 
   return (
-    <div className="bg-white w-56 h-64 shadow-xl rounded-2xl p-4">
+    <div className="bg-white w-56 h-64 shadow-xl rounded-2xl p-4 mb-4">
       <header className="flex justify-between mb-4">
         <p className="text-tuna capitalize font-bold">{selectedDate.toLocaleString('default', { month: 'long' })} {selectedDate.getFullYear()}</p>
         <div className="flex">
