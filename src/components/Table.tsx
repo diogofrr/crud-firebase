@@ -73,7 +73,7 @@ export default function Table({ clients, editClient, deleteClient }: ITableProps
   return (
     <>
       <DeleteModal open={openModal} handleCloseModal={handleCloseDeleteModal} deleteClient={handleDeleteClient} />
-      <div className={`overflow-auto h-auto min-h-[70vh] max-h-[70vh] min-w-[1280px]  ${clients.length === 0 && "flex items-center justify-center"}`}>
+      <div className={`overflow-auto h-[70vh] min-w-[1280px]  ${clients.length === 0 && "flex items-center justify-center"}`}>
         {clients.length > 0 ? (
           <table className="rounded-t-2xl overflow-hidden w-full">
             <thead className="text-white bg-chetwodeBlue rounded-t-2xl">

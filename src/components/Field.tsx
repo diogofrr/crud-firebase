@@ -1,6 +1,7 @@
 'use client'
 
 import { FormErrors } from "@/hooks/useFormValidation"
+import { ErrorIcon } from "./Icons"
 
 interface IFieldProps {
   text: string
@@ -22,16 +23,9 @@ interface IFieldProps {
 export default function Field({ text, type, defaultValue, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "", min = "", max = "", inputMask }: IFieldProps) {
   return (
     <div className="flex flex-col mb-4">
-      <label className="text-black mb-1 font-semibold">{text}</label>
+      <label className={`${errors[name] ? 'text-red-600' : readOnly ? 'text-gray-500' : 'text-chetwodeBlue'} font-medium relative top-3 left-4 bg-white px-2 max-w-fit rounded-lg`}>{text}</label>
       <input
-        className={`
-          text-black
-          border-2 border-black rounded-md
-          px-3 py-3
-          focus:outline-none
-          ${readOnly ? '' : 'focus:bg-white'}
-          bg-gray-50
-        `}
+        className={`${readOnly ? 'text-gray-500' : 'text-black'} border-2 ${errors[name] ? 'border-red-600' : readOnly ? 'border-gray-500' : 'border-chetwodeBlue'}  rounded-2xl p-4 focus:outline-none h-15`}
         type={type}
         value={value}
         defaultValue={defaultValue}
@@ -46,7 +40,7 @@ export default function Field({ text, type, defaultValue, value, readOnly = fals
         id={id}
         placeholder={placeholder}
       />
-      {errors[name] && <p className="text-red-600">{errors[name]}</p>}
+      {errors[name] && <p className="text-red-600 pt-2"><ErrorIcon className="inline" /> {errors[name]}</p>}
     </div>
   )
 }

@@ -12,6 +12,7 @@ module.exports = {
       'tuna': '#30324D',
       'chetwodeBlue': '#8184CC',
       'hippieGreen': {
+        50: '#E2EBDA',
         100: '#B3CCA9',
         200: '#8FBD8E',
         300: '#6BAC73',
@@ -34,6 +35,7 @@ module.exports = {
         700: '#7A7A7A'
       },
       'blue': {
+        50: '#F1F7FB',
         100: '#C0D9ED',
         200: '#99C1E1',
         300: '#73A9D5',
@@ -43,6 +45,7 @@ module.exports = {
         700: '#0B417D'
       },
       'yellow': {
+        50: '#FBF3DF',
         100: '#EED5A1',
         200: '#E5C17C',
         300: '#DAAE58',
@@ -52,6 +55,7 @@ module.exports = {
         700: '#AB7720'
       },
       'red': {
+        50: '#F3D6D8',
         100: '#D99AAD',
         200: '#D07D8B',
         300: '#C7516A',

@@ -33,7 +33,7 @@ export default function Birthdays({ clients, status }: IBirthdaysProps) {
   }
 
   return (
-    <div className="bg-white overflow-y-auto overflow-x-hidden max-h-96 w-56 p-2 shadow-xl rounded-2xl mb-4 flex flex-col items-center py-6">
+    <div className="bg-white w-full md:w-56 overflow-y-auto overflow-x-hidden max-h-80 p-2 shadow-xl rounded-2xl mb-4 flex flex-col items-center py-6">
       <p className="text-tuna font-medium text-lg mb-4">&#127874; Aniversariantes {filteredClients.length !== 0 && `(${filteredClients.length})`}</p>
       {filteredClients.length !== 0 ? (
         filteredClients.map((client) => {

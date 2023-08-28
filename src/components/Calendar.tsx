@@ -74,7 +74,7 @@ export default function Calendar({ clients }: ICalendarProps) {
   }
 
   return (
-    <div className="bg-white w-56 h-64 shadow-xl rounded-2xl p-4 mb-4">
+    <div className="bg-white w-full md:w-56 h-80 md:h-64 shadow-xl rounded-2xl p-8 md:p-4 mb-4">
       <header className="flex justify-between mb-4">
         <p className="text-tuna capitalize font-bold">{selectedDate.toLocaleString('default', { month: 'long' })} {selectedDate.getFullYear()}</p>
         <div className="flex">
@@ -86,7 +86,7 @@ export default function Calendar({ clients }: ICalendarProps) {
           </button>
         </div>
       </header>
-      <div className="grid grid-cols-7 gap-2 mb-4">
+      <div className="grid grid-cols-7 gap-4 md:gap-2 md:mb-2 mb-4">
         <p className="text-red-400 text-xs text-center font-bold">D</p>
         <p className="text-tuna text-xs text-center font-bold">S</p>
         <p className="text-tuna text-xs text-center font-bold">T</p>
@@ -95,7 +95,7 @@ export default function Calendar({ clients }: ICalendarProps) {
         <p className="text-tuna text-xs text-center font-bold">S</p>
         <p className="text-red-400 text-xs text-center font-bold">S</p>
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-4 md:gap-2">
         {renderCalendar()}
       </div>
     </div>

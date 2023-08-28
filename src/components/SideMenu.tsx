@@ -22,7 +22,7 @@ export default function SideMenu({ handleCloseMenu, menuOpen }: ISideMenuProps) 
   }
 
   return (
-    <aside className={`h-screen bg-white transition-all duration-300 ${menuOpen ? "lg:w-[17rem] w-screen p-5" : "w-0"} overflow-hidden rounded-r-2xl shadow-xl fixed top-0 left-0`}>
+    <aside className={`h-screen bg-white transition-all duration-300 ${menuOpen ? "lg:w-[17rem] w-screen p-5" : "w-0"} overflow-hidden rounded-r-2xl shadow-xl fixed top-0 left-0 z-20`}>
         <div className="flex items-center content-center flex-col min-w-max">
           <button className="self-end" onClick={handleCloseMenu}>
             <LeftArrowIcon width="w-10" height="h-10" className="text-white border-2 border-tuna p-1 hover:text-tuna bg-tuna hover:bg-white rounded-full cursor-pointer"/>  

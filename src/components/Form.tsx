@@ -14,11 +14,10 @@ import { telFieldValidation, birthdatFieldValidation, emailFieldValidation, name
 
 interface IFormProps {
   client: Client
-  cancel: () => void
-  saveClient?: (cliente: Client) => void
+  saveClient: (cliente: Client) => void
   status: STATUS
 }
-export default function Form({ client, cancel, saveClient }: IFormProps) {
+export default function Form({ client, saveClient }: IFormProps) {
   const initialValues = {
     id: client?.id,
     name: client?.name ?? '',
@@ -120,19 +119,16 @@ export default function Form({ client, cancel, saveClient }: IFormProps) {
         <div className="flex justify-end mt-7">
           <Button
             type="submit"
-            color={context?.state.status === 'loading' ? 'gray' : 'green'}
-            className="mr-2"
+            color={context?.state.status === 'loading' ? 'gray' : 'hippieGreen'}
+            className="w-full"
             disabled={context?.state.status === 'loading'}
           >
             {context?.state.status === 'loading' ? (
-              <Spinner color="fill-green-700" width="w-5" height="w-5"  className="mx-5"/>
+              <Spinner color="fill-hippieGreen-700" width="w-5" height="w-5"  className="mx-5"/>
             ) 
             : (
               values.id ? 'ALTERAR': 'SALVAR'
             )}
-          </Button>
-          <Button onClick={cancel} color="gray">
-            CANCELAR
           </Button>
         </div>
       </form>

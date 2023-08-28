@@ -11,10 +11,10 @@ interface ISnackBar {
 export default function SnackBar({ type, message, open, closeSnackBar }: ISnackBar) {
 
   const snackBarStyles = {
-    loading: 'bg-blue-100',
-    success: 'bg-green-100',
-    error: 'bg-red-100',
-    warning: 'bg-yellow-100',
+    loading: 'bg-blue-50',
+    success: 'bg-hippieGreen-50',
+    error: 'bg-red-50',
+    warning: 'bg-yellow-50',
     idle: 'hidden'
   }
 
@@ -24,6 +24,14 @@ export default function SnackBar({ type, message, open, closeSnackBar }: ISnackB
     error: (<ErrorIcon />),
     warning: (<WarningIcon />),
     idle: (<></>)
+  }
+
+  const snackBarTexts = {
+    loading: 'text-blue-400',
+    success: 'text-hippieGreen-700',
+    error: 'text-red-700',
+    warning: 'text-yellow-700',
+    idle: 'hidden'
   }
 
   if (!open) return null
@@ -41,9 +49,9 @@ export default function SnackBar({ type, message, open, closeSnackBar }: ISnackB
       <span>
         {snackBarIcons[type]}
       </span>
-      <p className="text-gray-600 ml-2">{message}</p>
+      <p className={`${snackBarTexts[type]} ml-2`}>{message}</p>
       <span onClick={closeSnackBar} className="ml-auto">
-        <CloseIcon className={`text-black hover:cursor-pointer`} />
+        <CloseIcon className={`${snackBarTexts[type]} hover:cursor-pointer`} />
       </span>
     </div>
   )

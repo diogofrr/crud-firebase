@@ -24,7 +24,7 @@ export default function DeleteModal({ deleteClient, handleCloseModal, open }: ID
     <Modal size={'w-[32rem] h-72'} open={open}>
       <div className="flex justify-center items-center flex-col gap-4">
         <ErrorIcon width="w-24" height="h-24" />
-        <p className="text-black text-xl">Deseja excluir esse registro?</p>
+        <p className="text-tuna text-xl">Deseja excluir esse registro?</p>
         <div className="flex gap-4">
           <Button color="red" onClick={handleDeleteClient}>
             Excluir

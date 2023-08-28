@@ -40,7 +40,7 @@ export const WarningIcon = ({ className, width = 'w-6', height = 'h-6' }: IIconP
 
 export const SuccessIcon = ({ className, width = 'w-6', height = 'h-6' }: IIconProps) => {
   return (
-    <span className="text-green-400">
+    <span className="text-hippieGreen-400">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${width} ${height} ${className}`}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
       </svg>
@@ -50,7 +50,7 @@ export const SuccessIcon = ({ className, width = 'w-6', height = 'h-6' }: IIconP
 
 export const ErrorIcon = ({ className, width = 'w-6', height = 'h-6' }: IIconProps) => {
   return (
-    <span className="text-red-400">
+    <span className="text-red-600">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${width} ${height} ${className}`}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
       </svg>
@@ -58,7 +58,7 @@ export const ErrorIcon = ({ className, width = 'w-6', height = 'h-6' }: IIconPro
   )
 }
 
-export function Spinner({ width = 'w-6', height = 'h-6', background = 'text-gray-100', color = 'fill-blue-600', className = '' }: ISpinnerProps) {
+export function Spinner({ width = 'w-6', height = 'h-6', background = 'text-gray-100', color = 'fill-blue-400', className = '' }: ISpinnerProps) {
   return (
     <div role="status">
       <svg aria-hidden="true" className={`${width} ${height} ${className} ${background} animate-spin ${color}`} viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
