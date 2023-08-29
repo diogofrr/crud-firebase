@@ -27,7 +27,7 @@ export default function Home() {
     showTable
   } = useClients()
 
-  const [menuOpen, setMenuOpen] = useState(window.screen.width > 1366)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const handleCloseMenu = useCallback(() => {
     setMenuOpen(false)

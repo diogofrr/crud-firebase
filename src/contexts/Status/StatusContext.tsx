@@ -16,7 +16,13 @@ interface IStatusContextType {
   closeSnackBar: () => void
 }
 
-export const StatusContext = createContext<IStatusContextType>({});
+export const StatusContext = createContext<IStatusContextType>({
+  state: initialState,
+  startLoading: () => null,
+  stopLoading: () => null,
+  resetStatus: () => null,
+  closeSnackBar: () => null
+});
 
 const StatusProvider = ({ children }: IStatusContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
