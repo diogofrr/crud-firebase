@@ -74,7 +74,7 @@ export default function Home() {
                   </div>
                   <Form client={client} status={status} saveClient={saveClient} />
                 </div>
-                <div className="w-full md:w-auto">
+                <div className="w-full md:w-auto h-full">
                   <TotalClients clientsLength={clients.length} />
                   <Birthdays clients={clients} status={status} />
                   <Calendar clients={clients} />
