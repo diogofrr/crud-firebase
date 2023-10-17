@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getApps } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 if (!getApps().length) {
   const firebaseConfig = {
@@ -12,7 +13,9 @@ if (!getApps().length) {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
   }
 
-  initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app)
+  console.log(auth)
 }
 
 const firestore = getFirestore();

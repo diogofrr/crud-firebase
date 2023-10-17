@@ -1,7 +1,7 @@
 import Client from "@/core/Client";
 import IClientRepo from "@/core/ClientRepo";
 import firestore from "../config";
-import { QueryDocumentSnapshot, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore";
+import { QueryDocumentSnapshot, SnapshotOptions, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore";
 
 export default class ClientCollection implements IClientRepo {
 
@@ -14,7 +14,7 @@ export default class ClientCollection implements IClientRepo {
         tel
       };
     },
-    fromFirestore(snapshot: QueryDocumentSnapshot, options: any) {
+    fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions ) {
       const { name, birthday, email, tel } = snapshot.data(options);
       return new Client(name, birthday, tel, email, snapshot.id);
     }

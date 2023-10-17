@@ -1,5 +1,6 @@
 import { FormErrors } from "@/hooks/useFormValidation"
 import { parseDateString } from "./formatDate"
+import { SIMPLE, ADVANCED } from "../constants/constants"
 
 export const telFieldValidation = (errors: FormErrors, value: string) => {
   const updatedErrors = errors
@@ -45,6 +46,26 @@ export const emailFieldValidation = (errors: FormErrors, value: string) => {
     updatedErrors.email = 'Por favor, insira um email válido.'
   } else {
     updatedErrors.email = ''
+  }
+
+  return updatedErrors
+}
+
+export const passwordFieldValidation = (errors: FormErrors, value: string, mode: typeof SIMPLE | typeof ADVANCED) => {
+  const updatedErrors = errors
+
+  if (mode === 'simple') {
+    if (value === '') {
+      updatedErrors.password = 'Digite sua senha.'
+    }
+  } else {
+    if (value.length < 8) {
+      updatedErrors.password = 'Sua senha deve conter pelo menos 8 caracteres.'
+    } else if (value.length > 32) {
+      updatedErrors.password = 'Sua senha deve ter menos de 32 caracteres.'
+    } else {
+      updatedErrors.password = ''
+    }
   }
 
   return updatedErrors
