@@ -53,8 +53,8 @@ export const emailFieldValidation = (errors: FormErrors, value: string) => {
 export const passwordFieldValidation = (errors: FormErrors, value: string) => {
   const updatedErrors = errors
 
-  if (value.length < 8) {
-    updatedErrors.password = 'Sua senha deve conter pelo menos 8 caracteres.'
+  if (value.length < 6) {
+    updatedErrors.password = 'Sua senha deve conter pelo menos 6 caracteres.'
   } else if (value.length > 24) {
     updatedErrors.password = 'Sua senha deve ter menos de 24 caracteres.'
   } else {

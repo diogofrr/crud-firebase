@@ -13,7 +13,7 @@ export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
           <MenuHamburguerIcon width="w-7" height="h-7" className="text-tuna" />
         </button>
       )}
-      <span className="cursor-pointer flex ml-auto items-center">
+      <span className="flex ml-auto items-center">
         <span className="w-8 h-8 bg-white rounded-full mr-2"></span>
         <p className="text-tuna mr-2">Diogo F.</p>
       </span>

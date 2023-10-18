@@ -31,6 +31,7 @@ export default function useClients() {
         message: ''
       })
     }, 1000)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

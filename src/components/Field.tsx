@@ -22,9 +22,10 @@ interface IFieldProps {
   baseColor?: "primary" | "secondary"
   className?: string
   comparativeValue?: any
+  autoComplete?: string
 }
 
-export default function Field({ text, type, defaultValue, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "", min = "", max = "", inputMask, baseColor = "primary", className, comparativeValue }: IFieldProps) {
+export default function Field({ text, autoComplete, type, defaultValue, value, readOnly = false, onChange, name, id, errors, validation, placeholder = "", min = "", max = "", inputMask, baseColor = "primary", className, comparativeValue }: IFieldProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   
   const colors = {
@@ -57,6 +58,7 @@ export default function Field({ text, type, defaultValue, value, readOnly = fals
           name={name}
           id={id}
           placeholder={placeholder}
+          autoComplete={autoComplete}
         />
         {type === "password" && (
           <div className={`h-15 py-4 pr-4 border-t-2 border-r-2 border-b-2 rounded-ee-2xl rounded-se-2xl ${errors[name] ? 'border-red-600' : readOnly ? 'border-gray-500' : colors[baseColor].border} cursor-pointer`} onClick={() => setShowPassword((prevState) => !prevState)}>

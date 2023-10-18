@@ -5,7 +5,7 @@ import { QueryDocumentSnapshot, SnapshotOptions, addDoc, collection, deleteDoc, 
 
 export default class ClientCollection implements IClientRepo {
 
-  #conversor = {
+  #converter = {
     toFirestore({ name, birthday, email, tel }: Client) {
       return {
         name,
@@ -21,7 +21,7 @@ export default class ClientCollection implements IClientRepo {
   };
   
   private clientCollection() {
-    return collection(firestore, "clientes").withConverter(this.#conversor);
+    return collection(firestore, "clients").withConverter(this.#converter);
   }
 
 
