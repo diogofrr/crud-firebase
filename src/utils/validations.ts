@@ -1,6 +1,5 @@
 import { FormErrors } from "@/hooks/useFormValidation"
 import { parseDateString } from "./formatDate"
-import { SIMPLE, ADVANCED } from "../constants/constants"
 
 export const telFieldValidation = (errors: FormErrors, value: string) => {
   const updatedErrors = errors
@@ -51,21 +50,27 @@ export const emailFieldValidation = (errors: FormErrors, value: string) => {
   return updatedErrors
 }
 
-export const passwordFieldValidation = (errors: FormErrors, value: string, mode: typeof SIMPLE | typeof ADVANCED) => {
+export const passwordFieldValidation = (errors: FormErrors, value: string) => {
   const updatedErrors = errors
 
-  if (mode === 'simple') {
-    if (value === '') {
-      updatedErrors.password = 'Digite sua senha.'
-    }
+  if (value.length < 8) {
+    updatedErrors.password = 'Sua senha deve conter pelo menos 8 caracteres.'
+  } else if (value.length > 24) {
+    updatedErrors.password = 'Sua senha deve ter menos de 24 caracteres.'
   } else {
-    if (value.length < 8) {
-      updatedErrors.password = 'Sua senha deve conter pelo menos 8 caracteres.'
-    } else if (value.length > 32) {
-      updatedErrors.password = 'Sua senha deve ter menos de 32 caracteres.'
-    } else {
-      updatedErrors.password = ''
-    }
+    updatedErrors.password = ''
+  }
+
+  return updatedErrors
+}
+
+export const confirmPasswordFieldValidation = (errors: FormErrors, value: string, comparativeValue: string) => {
+  const updatedErrors = errors
+
+  if (value !== comparativeValue) {
+    updatedErrors.confirmPassword = "As senhas não conferem."
+  } else {
+    updatedErrors.confirmPassword = ''
   }
 
   return updatedErrors

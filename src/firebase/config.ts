@@ -15,7 +15,6 @@ if (!getApps().length) {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app)
-  console.log(auth)
 }
 
 const firestore = getFirestore();

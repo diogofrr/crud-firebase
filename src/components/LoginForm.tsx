@@ -42,6 +42,7 @@ export default function LoginForm() {
         errors={errors}
         placeholder="Insira o seu email"
         baseColor="secondary"
+        validation={emailFieldValidation}
       />
       <Field
         text="Senha"
@@ -53,8 +54,14 @@ export default function LoginForm() {
         errors={errors}
         placeholder="Insira a sua senha"
         baseColor="secondary"
+        className="mb-3"
       />
-      <Button color="hippieGreen" type="submit" className="w-full h-9">Entrar</Button>
+      <a href="/" className="text-chetwodeBlue w-full block text-right mb-4 hover:underline text-base">Esqueceu sua senha?</a>
+      <Button color="hippieGreen" type="submit" className="w-full h-9 mb-12">Entrar</Button>
+      <div className="flex items-center justify-center flex-col">
+        <p className="text-tuna text-base">Não tem uma conta?</p>
+        <a href="/auth/register" className="text-chetwodeBlue hover:underline text-base">Registre-se</a>
+      </div>
     </form>
   )
 }

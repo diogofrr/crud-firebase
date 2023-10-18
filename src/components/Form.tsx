@@ -70,6 +70,7 @@ export default function Form({ client, saveClient }: IFormProps) {
             name="id"
             id="fieldId"
             errors={errors}
+            className="mb-4"
           />
         )}
         <Field
@@ -82,6 +83,7 @@ export default function Form({ client, saveClient }: IFormProps) {
           errors={errors}
           validation={nameFieldValidation}
           placeholder="Digite o nome do cliente"
+          className="mb-4"
         />
         <Field
           text="Data de nascimento"
@@ -92,6 +94,7 @@ export default function Form({ client, saveClient }: IFormProps) {
           id="birthdayField"
           errors={errors}
           validation={birthdatFieldValidation}
+          className="mb-4"
         />
         <Field
           text="Telefone"
@@ -104,6 +107,7 @@ export default function Form({ client, saveClient }: IFormProps) {
           validation={telFieldValidation}
           placeholder="Insira o telefone do cliente"
           inputMask={tel}
+          className="mb-4"
         />
         <Field
           text="Email"
@@ -115,6 +119,7 @@ export default function Form({ client, saveClient }: IFormProps) {
           errors={errors}
           validation={emailFieldValidation}
           placeholder="Insira o email do cliente"
+          className="mb-4"
         />
         <div className="flex justify-end mt-7">
           <Button
