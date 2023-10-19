@@ -1,0 +1,8 @@
+const actions = { 
+  SAVE_USER_DATA: 'SAVE_USER_DATA',
+  SAVE_SESSION_DATA: 'SAVE_SESSION_DATA',
+  CLEAR_SESSION: 'CLEAR_SESSION',
+  START_LOADING: 'START_LOADING'
+}
+
+export default actions
