@@ -53,7 +53,10 @@ export default class UserCollection implements IUserRepo {
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
         const user = new User(userData.name, userData.profilePicture, userData.email, userAuth.uid);
-        return user;
+        return {
+          userData: user,
+          sessionData: auth
+        };
       } else {
         throw new Error("Dados do usuário não encontrados no Firestore");
       }

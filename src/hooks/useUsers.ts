@@ -1,21 +1,25 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useContext, useMemo } from "react"
 import User from "@/core/User"
 import UserCollection from "@/firebase/db/UserCollection"
 import IUserRepo from "@/core/UserRepo"
+import { SessionContext } from "@/contexts/Session/SessionContext"
 
 export default function useUsers() {
   const repo: IUserRepo = useMemo(() => new UserCollection(), [])
-  const [userData, setUserData] = useState<User | null>(null)
+  const session = useContext(SessionContext)
   
   const getUserInformation = useCallback(async () => {
     await repo.getUserInformation()
       .then(user => {
-        if (user) setUserData(user)
+        if (user) {
+          session?.saveUserData(user)
+          session?.saveSessionData()
+        }
       })
       .catch(err => {
         console.error(err)
       }) 
-  }, [repo])
+  }, [repo, session])
   
   const updateUserInformation = useCallback(async (user: User) => {
     await repo.update(user).then(() => getUserInformation())
@@ -25,5 +29,5 @@ export default function useUsers() {
     await repo.create(user).then(() => getUserInformation())
   }, [getUserInformation, repo])
 
-  return { userData, getUserInformation, updateUserInformation, createUserInformation }
+  return { getUserInformation, updateUserInformation, createUserInformation }
 }

@@ -7,11 +7,11 @@ import { createContext, useReducer, ReactNode } from "react";
 import initialState, { IInitialState } from "./data";
 import reducer from "./reducer";
 
-interface IStatusContextProps {
+interface ISessionContextProps {
   children: ReactNode;
 }
 
-interface IStatusContextType {
+interface ISessionContextType {
   state: IInitialState;
   startLoading: () => void;
   clearSession: () => void;
@@ -19,17 +19,17 @@ interface IStatusContextType {
   saveSessionData: (sessionData: UserAuth) => void;
 }
 
-export const StatusContext = createContext<IStatusContextType | null>(null);
+export const SessionContext = createContext<ISessionContextType | null>(null);
 
-const StatusProvider = ({ children }: IStatusContextProps) => {
+const SessionProvider = ({ children }: ISessionContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const startLoading = () => {
-    dispatch({ type: "START_LOADING" });
+    dispatch({ type: "START_LOADING", payload: null });
   };
 
   const clearSession = () => {
-    dispatch({ type: "CLEAR_SESSION" });
+    dispatch({ type: "CLEAR_SESSION", payload: null });
   };
 
   const saveUserData = (user: User) => {
@@ -40,7 +40,7 @@ const StatusProvider = ({ children }: IStatusContextProps) => {
     dispatch({ type: "SAVE_SESSION_DATA", payload: sessionData });
   };
 
-  const contextValue: IStatusContextType = {
+  const contextValue: ISessionContextType = {
     state,
     startLoading,
     clearSession,
@@ -49,10 +49,10 @@ const StatusProvider = ({ children }: IStatusContextProps) => {
   };
 
   return (
-    <StatusContext.Provider value={contextValue}>
+    <SessionContext.Provider value={contextValue}>
       {children}
-    </StatusContext.Provider>
+    </SessionContext.Provider>
   );
 };
 
-export default StatusProvider;
+export default SessionProvider;

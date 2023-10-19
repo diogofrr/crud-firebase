@@ -1,5 +1,6 @@
 'use client'
 
+import SessionProvider from "@/contexts/Session/SessionContext"
 import StatusProvider from "@/contexts/Status/StatusContext"
 
 interface IProviderProps {
@@ -9,7 +10,9 @@ interface IProviderProps {
 export default function Provider({ children }: IProviderProps) {
   return (
     <StatusProvider>
-      {children}
+      <SessionProvider>
+        {children}
+      </SessionProvider>
     </StatusProvider>
   )
 }
