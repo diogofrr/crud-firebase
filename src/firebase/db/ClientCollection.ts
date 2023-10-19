@@ -1,6 +1,6 @@
 import Client from "@/core/Client";
 import IClientRepo from "@/core/ClientRepo";
-import firestore from "../config";
+import { firestore } from "../config";
 import { QueryDocumentSnapshot, SnapshotOptions, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore";
 
 export default class ClientCollection implements IClientRepo {

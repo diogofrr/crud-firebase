@@ -1,6 +1,6 @@
 import User from "@/core/User";
 import IUserRepo from "@/core/UserRepo";
-import firestore from "../config";
+import { firestore } from "../config";
 import { QueryDocumentSnapshot, SnapshotOptions, addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 

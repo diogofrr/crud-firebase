@@ -8,8 +8,8 @@ import Field from "./Field";
 import Button from "./Button";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import SnackBar from "./SnackBar";
-import { getAuth } from "firebase/auth";
 import { useRouter } from 'next/navigation'
+import { auth } from "@/firebase/config";
 
 export default function LoginForm() {
   const initialValues = {
@@ -22,7 +22,7 @@ export default function LoginForm() {
     signInWithEmailAndPassword,
     user,
     loading,
-  ] = useSignInWithEmailAndPassword(getAuth());
+  ] = useSignInWithEmailAndPassword(auth);
 
   const router = useRouter()
 

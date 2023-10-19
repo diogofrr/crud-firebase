@@ -10,7 +10,8 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import SnackBar from "./SnackBar";
 import useUsers from "@/hooks/useUsers";
 import User from "@/core/User";
-import { getAuth } from "firebase/auth";
+import { auth } from "@/firebase/config";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const initialValues = {
@@ -20,10 +21,11 @@ export default function RegisterForm() {
     confirmPassword: ''
   }
 
-  const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(getAuth())
+  const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth)
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
   const { state, startLoading, stopLoading, closeSnackBar } = useContext(StatusContext)
   const { createUserInformation } = useUsers()
+  const router = useRouter()
 
   const handleSaveAndValidateLogin = useCallback(() => {
     startLoading('Realizando cadastro...')
@@ -50,7 +52,7 @@ export default function RegisterForm() {
                     status: "success",
                     message: "Cadastro realizado com sucesso!"
                   })
-                  // window.location.href = '/' 
+                  router.push('/')
                 })
             } else {
               updatedErrors.email = "Este email já está cadastrado."
@@ -75,7 +77,7 @@ export default function RegisterForm() {
 
       return updatedErrors
     })
-  }, [createUserInformation, createUserWithEmailAndPassword, errors, handleValidate, startLoading, stopLoading, values.confirmPassword, values.email, values.name, values.password])
+  }, [createUserInformation, createUserWithEmailAndPassword, errors, handleValidate, router, startLoading, stopLoading, values.confirmPassword, values.email, values.name, values.password])
 
   return (
     <>
