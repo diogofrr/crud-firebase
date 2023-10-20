@@ -1,7 +1,8 @@
 'use client'
 
 import Loading from "@/components/Loading"
-import { auth } from "@/firebase/config"
+import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants"
+import useSession from "@/hooks/useSession"
 import { useRouter } from "next/navigation"
 import { useLayoutEffect } from "react"
 
@@ -11,14 +12,15 @@ interface IAuthLayoutProps {
 
 export default function AuthLayout({ children }: IAuthLayoutProps) {
     const router = useRouter()
+    const session = useSession()
 
     useLayoutEffect(() => {
-        if (auth.currentUser) {
-            router.push('')
+        if (session.profileData?.status === AUTHENTICATED) {
+            router.push('/')
         }
-    }, [router])
+    }, [router, session.profileData?.status])
     
-    if (auth.currentUser) {
+    if (session.profileData?.status !== UNAUTHENTICATED) {
         return <Loading />
     }
 

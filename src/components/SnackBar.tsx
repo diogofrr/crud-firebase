@@ -1,5 +1,6 @@
 import { STATUS } from "@/types/global";
 import { ErrorIcon, SuccessIcon, WarningIcon, Spinner, CloseIcon } from "./Icons";
+import { useEffect } from "react";
 
 interface ISnackBar {
   type: STATUS,

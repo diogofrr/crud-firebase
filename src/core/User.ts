@@ -38,4 +38,13 @@ export default class User {
   set profilePicture(profilePicture) {
     this.#profilePicture = profilePicture
   }
+
+  toJSON() {
+    return {
+      uid: this.#uid,
+      name: this.#name,
+      profilePicture: this.#profilePicture,
+      email: this.#email
+    };
+  }
 }

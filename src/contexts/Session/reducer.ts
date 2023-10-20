@@ -2,8 +2,8 @@ import { User as UserAuth } from "firebase/auth"
 import User from "@/core/User"
 
 import actions from "./actions";
-import initialState from "./data";
-import { AUTHENTICATED, LOADING } from "@/constants/constants";
+import { AUTHENTICATED, LOADING, UNAUTHENTICATED } from "@/constants/constants";
+import { SessionStatus } from "@/types/login";
 
 type ACTIONTYPE = {
   type: typeof actions.SAVE_USER_DATA
@@ -15,8 +15,8 @@ type ACTIONTYPE = {
   type: typeof actions.CLEAR_SESSION
   payload: null
 } | {
-  type: typeof actions.START_LOADING
-  payload: null
+  type: typeof actions.CHANGE_STATUS
+  payload: SessionStatus
 }
 
 // tipar o state com "typeof initialState" ou "IInitialState" gera um erro de tipagem no arquivo SessionContext
@@ -34,13 +34,16 @@ function reducer(state: any, action: ACTIONTYPE) {
         status: AUTHENTICATED,
         sessionData: action.payload
       };
-    case actions.START_LOADING:
+    case actions.CHANGE_STATUS:
       return {
         ...state,
-        status: LOADING
+        status: action.payload
       };
     case actions.CLEAR_SESSION:
-      return initialState;
+      return {
+        ...state,
+        status: UNAUTHENTICATED
+      };
     default:
       throw new Error();
   }

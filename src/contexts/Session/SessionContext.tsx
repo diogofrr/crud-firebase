@@ -3,9 +3,10 @@
 import { User as UserAuth } from "firebase/auth"
 import User from "@/core/User"
 
-import { createContext, useReducer, ReactNode } from "react";
+import { createContext, useReducer, ReactNode, useEffect } from "react";
 import initialState, { IInitialState } from "./data";
 import reducer from "./reducer";
+import { SessionStatus } from "@/types/login";
 
 interface ISessionContextProps {
   children: ReactNode;
@@ -13,7 +14,7 @@ interface ISessionContextProps {
 
 interface ISessionContextType {
   state: IInitialState;
-  startLoading: () => void;
+  changeStatus: (status: SessionStatus) => void;
   clearSession: () => void;
   saveUserData: (user: User) => void;
   saveSessionData: (sessionData: UserAuth) => void;
@@ -24,8 +25,12 @@ export const SessionContext = createContext<ISessionContextType | null>(null);
 const SessionProvider = ({ children }: ISessionContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const startLoading = () => {
-    dispatch({ type: "START_LOADING", payload: null });
+  useEffect(() => {
+    console.log(`ContextState: ${JSON.stringify(state)}`);
+  }, [state]);
+
+  const changeStatus = (status: SessionStatus) => {
+    dispatch({ type: "CHANGE_STATUS", payload: status });
   };
 
   const clearSession = () => {
@@ -42,7 +47,7 @@ const SessionProvider = ({ children }: ISessionContextProps) => {
 
   const contextValue: ISessionContextType = {
     state,
-    startLoading,
+    changeStatus,
     clearSession,
     saveUserData,
     saveSessionData

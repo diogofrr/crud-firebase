@@ -1,7 +1,8 @@
 'use client'
 
 import Loading from "@/components/Loading"
-import { auth } from "@/firebase/config"
+import { AUTHENTICATED } from "@/constants/constants"
+import useSession from "@/hooks/useSession"
 import { useRouter } from "next/navigation"
 import { useLayoutEffect } from "react"
 
@@ -11,14 +12,15 @@ interface IDashboardLayoutProps {
 
 export default function DashboardLayout({ children }: IDashboardLayoutProps) {
     const router = useRouter()
+    const session = useSession()
 
     useLayoutEffect(() => {
-        if (!auth.currentUser) {
+        if (session.profileData?.status !== AUTHENTICATED) {
             return router.push('/auth/login')
         }
-    }, [router])
+    }, [router, session.profileData?.status])
     
-    if (!auth.currentUser) {
+    if (session.profileData?.status !== AUTHENTICATED) {
         return <Loading />
     }
 

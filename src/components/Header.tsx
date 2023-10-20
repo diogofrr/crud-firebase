@@ -1,4 +1,7 @@
-import { ChevronDownIcon, MenuHamburguerIcon } from "./Icons";
+import { MenuHamburguerIcon } from "./Icons";
+import Image from "next/image";
+import useSession from "@/hooks/useSession";
+import { useEffect } from "react";
 
 interface IHeaderProps {
   handleOpenMenu: () => void
@@ -6,6 +9,8 @@ interface IHeaderProps {
 }
 
 export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
+  const { profileData } = useSession()
+
   return (
     <header className="flex items-center pt-8 h-20">
       {!menuOpen && (
@@ -14,8 +19,20 @@ export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
         </button>
       )}
       <span className="flex ml-auto items-center">
-        <span className="w-8 h-8 bg-white rounded-full mr-2"></span>
-        <p className="text-tuna mr-2">Diogo F.</p>
+        {profileData?.userData?.profilePicture ? (
+          <Image src={profileData?.userData?.profilePicture}
+            alt={`Foto de perfil de ${profileData?.userData?.name}`}
+            width={32}
+            height={32}
+            className="rounded-full mr-2"
+            priority
+            quality={100}
+            fill
+          />
+        ) : (
+          <span className="w-8 h-8 bg-white rounded-full mr-2"></span>
+        )}
+        <p className="text-tuna mr-2 capitalize">{profileData?.userData?.name}</p>
       </span>
     </header>
   )

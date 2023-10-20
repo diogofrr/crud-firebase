@@ -8,7 +8,7 @@ import Field from "./Field";
 import Button from "./Button";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import SnackBar from "./SnackBar";
-import useUsers from "@/hooks/useUsers";
+import useSession from "@/hooks/useSession";
 import User from "@/core/User";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ export default function RegisterForm() {
   const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth)
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
   const { state, startLoading, stopLoading, closeSnackBar } = useContext(StatusContext)
-  const { createUserInformation } = useUsers()
+  const { createUserInformation } = useSession()
   const router = useRouter()
 
   const handleSaveAndValidateLogin = useCallback(() => {

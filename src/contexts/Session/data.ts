@@ -1,6 +1,6 @@
 import { User as UserAuth } from "firebase/auth"
 import User from "@/core/User"
-import { UNAUTHENTICATED } from "@/constants/constants"
+import { LOADING } from "@/constants/constants"
 
 type STATUS = 'authenticated' | 'unauthenticated' | 'loading'
 
@@ -11,7 +11,7 @@ export interface IInitialState {
 }
 
 const initialState: IInitialState = {
-  status: UNAUTHENTICATED,
+  status: LOADING,
   sessionData: null,
   userData: null
 }

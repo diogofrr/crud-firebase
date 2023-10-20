@@ -1,11 +1,5 @@
-import Link from "next/link";
+import useSession from "@/hooks/useSession";
 import { ConfigIcon, LeftArrowIcon, LogoutIcon, UserIcon, XIcon } from "./Icons";
-
-interface IMenuItemProps {
-  children: React.ReactNode
-  className?: string
-  href: string
-}
 
 interface ISideMenuProps {
   menuOpen: boolean
@@ -13,13 +7,7 @@ interface ISideMenuProps {
 }
 
 export default function SideMenu({ handleCloseMenu, menuOpen }: ISideMenuProps) {
-  function MenuItem({ children, className, href }: IMenuItemProps) {
-    return (
-      <Link href={href} className={`${className} flex no-underline text-tuna hover:text-chetwodeBlue`}>
-        {children}
-      </Link>
-    )
-  }
+  const session = useSession()
 
   return (
     <aside className={`h-screen bg-white transition-all duration-300 ${menuOpen ? "lg:w-[17rem] w-screen p-5" : "w-0"} overflow-hidden rounded-r-2xl shadow-xl fixed top-0 left-0 z-20`}>
@@ -33,19 +21,19 @@ export default function SideMenu({ handleCloseMenu, menuOpen }: ISideMenuProps) 
           <p className="text-tuna font-normal text-lg">Cadastro de Usuários</p>
         </div>
         <nav className="mt-12 min-w-max">
-          <MenuItem href="/">
+          <div className="flex no-underline text-tuna hover:text-chetwodeBlue">
             <UserIcon className="mr-2" />
             Início
-          </MenuItem>
+          </div>
           <hr className="text-tuna border-tuna my-4 border-2 rounded-xl" />
-          <MenuItem href="/" className="mb-4">
+          <div className="flex no-underline text-tuna hover:text-chetwodeBlue mb-4">
             <ConfigIcon className="mr-2" />
             Configurações
-          </MenuItem>
-          <MenuItem href="/">
+          </div>
+          <button type="button" onClick={() => session.signOut()} className="flex no-underline text-tuna hover:text-chetwodeBlue mb-4">
             <LogoutIcon className="mr-2" />
             Sair
-          </MenuItem>
+          </button>
         </nav>
     </aside>
   )
