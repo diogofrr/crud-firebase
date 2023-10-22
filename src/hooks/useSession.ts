@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import User from "@/core/User";
 import UserCollection from "@/firebase/db/UserCollection";
 import IUserRepo from "@/core/UserRepo";
 import { SessionContext } from "@/contexts/Session/SessionContext";
-import { ILocalSessionResponse, ILoginSession } from "@/types/login";
-import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants";
+import { ILoginSession } from "@/types/login"; 
 
 export default function useSession() {
   const repo: IUserRepo = useMemo(() => new UserCollection(), []);
@@ -68,35 +67,12 @@ export default function useSession() {
       .catch((err) => console.error(err));
   }, [context]);
 
-  const getLocalSession = useCallback(async () => {
-    try {
-      const { data }: ILocalSessionResponse = await (
-        await fetch("/api/auth/get-session")
-      ).json();
-
-      if (context) {
-        if (data) {
-          context.saveUserData(data.user);
-          context.saveSessionData(data.session);
-          context.changeStatus(AUTHENTICATED)
-        } else {
-          context.changeStatus(UNAUTHENTICATED);
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [context]);
-
-  useEffect(() => {
-    getLocalSession();
-  }, [saveLocalSession]);
 
   return {
     profileData: context?.state,
     getUserInformation,
     updateUserInformation,
     createUserInformation,
-    signOut,
+    signOut
   };
 }

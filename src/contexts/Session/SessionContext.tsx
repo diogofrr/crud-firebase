@@ -3,10 +3,11 @@
 import { User as UserAuth } from "firebase/auth"
 import User from "@/core/User"
 
-import { createContext, useReducer, ReactNode, useEffect } from "react";
+import { createContext, useReducer, ReactNode, useEffect, useCallback } from "react";
 import initialState, { IInitialState } from "./data";
 import reducer from "./reducer";
-import { SessionStatus } from "@/types/login";
+import { ILocalSessionResponse, SessionStatus } from "@/types/login";
+import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants";
 
 interface ISessionContextProps {
   children: ReactNode;
@@ -25,9 +26,31 @@ export const SessionContext = createContext<ISessionContextType | null>(null);
 const SessionProvider = ({ children }: ISessionContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const getLocalSession = useCallback(async () => {
+    try {
+      const { data }: ILocalSessionResponse = await (
+        await fetch("/api/auth/get-session")
+      ).json();
+
+        if (data) {
+          saveUserData(data.user);
+          saveSessionData(data.session);
+          changeStatus(AUTHENTICATED)
+        } else {
+          changeStatus(UNAUTHENTICATED);
+        }
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
   useEffect(() => {
     console.log(`ContextState: ${JSON.stringify(state)}`);
-  }, [state]);
+  }, [state])
+
+  useEffect(() => {
+    getLocalSession()
+  }, [getLocalSession]);
 
   const changeStatus = (status: SessionStatus) => {
     dispatch({ type: "CHANGE_STATUS", payload: status });
