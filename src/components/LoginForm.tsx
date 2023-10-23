@@ -1,16 +1,21 @@
 "use client";
 
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import useFormValidation from "@/hooks/useFormValidation";
 import { StatusContext } from "@/contexts/Status/StatusContext";
-import { emailFieldValidation } from "@/utils/validations";
+import {
+  emailFieldValidation,
+  requiredFieldValidation,
+} from "@/utils/validations";
 import Field from "./Field";
 import Button from "./Button";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import SnackBar from "./SnackBar";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/config";
 import useSession from "@/hooks/useSession";
+import { LOADING } from "@/constants/constants";
+import Link from "next/link";
 
 export default function LoginForm() {
   const initialValues = {
@@ -19,13 +24,9 @@ export default function LoginForm() {
   };
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } =
     useFormValidation(initialValues);
-  const { startLoading, stopLoading, state, closeSnackBar } =
+  const { startLoading, stopLoading, state, closeSnackBar, resetStatus } =
     useContext(StatusContext);
-  const [signInWithEmailAndPassword, user, loading] =
-    useSignInWithEmailAndPassword(auth);
   const { getUserInformation } = useSession();
-
-  const router = useRouter();
 
   const handleSaveAndValidateLogin = useCallback(() => {
     startLoading("Validando informações...");
@@ -36,27 +37,30 @@ export default function LoginForm() {
       };
 
       updatedErrors.email = emailFieldValidation(errors, values.email).email;
+      updatedErrors.password = requiredFieldValidation(
+        errors,
+        values.password
+      ).password;
 
       if (Object.values(updatedErrors).every((error) => error === "")) {
-        signInWithEmailAndPassword(values.email.trim(), values.password.trim())
+        signInWithEmailAndPassword(
+          auth,
+          values.email.trim(),
+          values.password.trim()
+        )
           .then((credentials) => {
-            if (!credentials) {
-              stopLoading({
-                status: "error",
-                message: "Usuário e/ou senha inválidos.",
-              });
-            } else {
+            if (credentials) {
               stopLoading({
                 status: "success",
                 message: "Login realizado com sucesso.",
               });
-              getUserInformation().then(() => router.push("/"));
+              getUserInformation();
             }
           })
-          .catch((error) => {
+          .catch(() => {
             stopLoading({
               status: "error",
-              message: error.message,
+              message: "Usuário e/ou senha inválidos.",
             });
           });
       } else {
@@ -72,8 +76,6 @@ export default function LoginForm() {
     errors,
     getUserInformation,
     handleValidate,
-    router,
-    signInWithEmailAndPassword,
     startLoading,
     stopLoading,
     values.email,
@@ -118,28 +120,28 @@ export default function LoginForm() {
           className="mb-3"
           autoComplete="current-password"
         />
-        <a
-          href="/"
+        <Link
+          href="/auth/forgot-password"
           className="text-chetwodeBlue w-full block text-right mb-4 hover:underline text-base"
         >
           Esqueceu sua senha?
-        </a>
+        </Link>
         <Button
-          color={loading ? "gray" : "hippieGreen"}
+          color={state.status === LOADING ? "gray" : "hippieGreen"}
           type="submit"
-          disabled={loading}
+          disabled={state.status === LOADING}
           className="w-full h-9 mb-12"
         >
           Entrar
         </Button>
         <div className="flex items-center justify-center flex-col">
           <p className="text-tuna text-base">Não tem uma conta?</p>
-          <a
+          <Link
             href="/auth/register"
             className="text-chetwodeBlue hover:underline text-base"
           >
             Registre-se
-          </a>
+          </Link>
         </div>
       </form>
     </>

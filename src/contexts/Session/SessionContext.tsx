@@ -19,6 +19,7 @@ interface ISessionContextType {
   clearSession: () => void;
   saveUserData: (user: User) => void;
   saveSessionData: (sessionData: UserAuth) => void;
+  getLocalSession: () => void;
 }
 
 export const SessionContext = createContext<ISessionContextType | null>(null);
@@ -73,7 +74,8 @@ const SessionProvider = ({ children }: ISessionContextProps) => {
     changeStatus,
     clearSession,
     saveUserData,
-    saveSessionData
+    saveSessionData,
+    getLocalSession
   };
 
   return (

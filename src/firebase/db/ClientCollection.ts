@@ -6,12 +6,13 @@ import { QueryDocumentSnapshot, SnapshotOptions, addDoc, collection, deleteDoc, 
 export default class ClientCollection implements IClientRepo {
 
   #converter = {
-    toFirestore({ name, birthday, email, tel }: Client) {
+    toFirestore({ name, birthday, email, tel, uid }: Client) {
       return {
         name,
         birthday,
         email,
-        tel
+        tel,
+        uid
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions ) {

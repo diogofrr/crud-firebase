@@ -75,3 +75,15 @@ export const confirmPasswordFieldValidation = (errors: FormErrors, value: string
 
   return updatedErrors
 }
+
+export const requiredFieldValidation = (errors: FormErrors, value: string) => {
+  const updatedErrors = errors
+
+  if (value === '') {
+    updatedErrors.password = "Por favor, insira sua senha."
+  } else {
+    updatedErrors.password = ''
+  }
+
+  return updatedErrors
+}

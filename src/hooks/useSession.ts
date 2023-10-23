@@ -19,9 +19,11 @@ export default function useSession() {
         }),
         cache: "no-cache",
         redirect: "follow",
-      }).catch((err) => console.error(err));
+      })
+      .then(() => context?.getLocalSession())
+      .catch((err) => console.error(err));
     },
-    []
+    [context]
   );
 
   const getUserInformation = useCallback(async () => {

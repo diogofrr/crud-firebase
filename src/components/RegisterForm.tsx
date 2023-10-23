@@ -1,88 +1,110 @@
-'use client'
+"use client";
 
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import useFormValidation from "@/hooks/useFormValidation";
 import { StatusContext } from "@/contexts/Status/StatusContext";
-import { confirmPasswordFieldValidation, emailFieldValidation, nameFieldValidation, passwordFieldValidation } from "@/utils/validations";
+import {
+  confirmPasswordFieldValidation,
+  emailFieldValidation,
+  nameFieldValidation,
+  passwordFieldValidation,
+} from "@/utils/validations";
 import Field from "./Field";
 import Button from "./Button";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import SnackBar from "./SnackBar";
 import useSession from "@/hooks/useSession";
 import User from "@/core/User";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { LOADING } from "@/constants/constants";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const initialValues = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  }
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
 
-  const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth)
-  const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
-  const { state, startLoading, stopLoading, closeSnackBar } = useContext(StatusContext)
-  const { createUserInformation } = useSession()
-  const router = useRouter()
+  const { values, handleChangeValue, handleSubmit, handleValidate, errors } =
+    useFormValidation(initialValues);
+  const { state, startLoading, stopLoading, closeSnackBar, resetStatus } =
+    useContext(StatusContext);
+  const { createUserInformation } = useSession();
 
   const handleSaveAndValidateLogin = useCallback(() => {
-    startLoading('Realizando cadastro...')
+    startLoading("Realizando cadastro...");
     handleValidate(() => {
       const updatedErrors = {
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      }
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      };
 
-      updatedErrors.name = nameFieldValidation(errors, values.name).name
-      updatedErrors.email = emailFieldValidation(errors, values.email).email
-      updatedErrors.password = passwordFieldValidation(errors, values.password).password
-      updatedErrors.confirmPassword = confirmPasswordFieldValidation(errors, values.confirmPassword, values.password).confirmPassword
+      updatedErrors.name = nameFieldValidation(errors, values.name).name;
+      updatedErrors.email = emailFieldValidation(errors, values.email).email;
+      updatedErrors.password = passwordFieldValidation(
+        errors,
+        values.password
+      ).password;
+      updatedErrors.confirmPassword = confirmPasswordFieldValidation(
+        errors,
+        values.confirmPassword,
+        values.password
+      ).confirmPassword;
 
-      if (Object.values(updatedErrors).every(error => error === '')) {
-        createUserWithEmailAndPassword(values.email, values.password)
+      if (Object.values(updatedErrors).every((error) => error === "")) {
+        createUserWithEmailAndPassword(auth, values.email, values.password)
           .then((userObject) => {
             if (userObject) {
-              createUserInformation(new User(values.name.trim(), '' ,values.email.trim(), userObject.user.uid))
-                .then(() => {
-                  stopLoading({
-                    status: "success",
-                    message: "Cadastro realizado com sucesso!"
-                  })
-                  router.push('/')
-                })
-            } else {
-              updatedErrors.email = "Este email já está cadastrado."
-              stopLoading({
-                status: "error",
-                message: "Erro ao realizar cadastro."
-              })
+              createUserInformation(
+                new User(
+                  values.name.trim(),
+                  "",
+                  values.email.trim(),
+                  userObject.user.uid
+                )
+              ).then(() => {
+                stopLoading({
+                  status: "success",
+                  message: "Cadastro realizado com sucesso!",
+                });
+              });
             }
           })
-          .catch((error) => {
+          .catch(() => {
+            updatedErrors.email = "Este email já está cadastrado.";
             stopLoading({
               status: "error",
-              message: error.message
-            })
-          })
-      }  else {
+              message: "Erro ao realizar cadastro.",
+            });
+          });
+      } else {
         stopLoading({
           status: "error",
-          message: "Preencha os campos corretamente."
-        })
+          message: "Preencha os campos corretamente.",
+        });
       }
 
-      return updatedErrors
-    })
-  }, [createUserInformation, createUserWithEmailAndPassword, errors, handleValidate, router, startLoading, stopLoading, values.confirmPassword, values.email, values.name, values.password])
+      return updatedErrors;
+    });
+  }, [createUserInformation, errors, handleValidate, startLoading, stopLoading, values.confirmPassword, values.email, values.name, values.password]);
 
   return (
     <>
-      <SnackBar message={state.message} open={state.snackbarOpen} type={state.status} closeSnackBar={closeSnackBar} />
-      <form className="w-full h-full" onSubmit={(e) => handleSubmit(e, handleSaveAndValidateLogin)}>
+      <SnackBar
+        message={state.message}
+        open={state.snackbarOpen}
+        type={state.status}
+        closeSnackBar={closeSnackBar}
+      />
+      <form
+        className="w-full h-full"
+        onSubmit={(e) => handleSubmit(e, handleSaveAndValidateLogin)}
+      >
         <Field
           text="Nome completo"
           type="text"
@@ -94,7 +116,7 @@ export default function RegisterForm() {
           placeholder="Insira o seu email"
           baseColor="secondary"
           validation={nameFieldValidation}
-          />
+        />
         <Field
           text="Email"
           type="email"
@@ -121,7 +143,7 @@ export default function RegisterForm() {
           validation={passwordFieldValidation}
           comparativeValue={values.password}
           autoComplete="new-password"
-          />
+        />
         <Field
           text="Confirme sua senha"
           type="password"
@@ -136,13 +158,25 @@ export default function RegisterForm() {
           validation={confirmPasswordFieldValidation}
           comparativeValue={values.password}
           autoComplete="new-password"
-          />
-        <Button color={loading ? "gray" : "hippieGreen"} type="submit" disabled={loading} className="w-full h-9 mb-12">Cadastrar</Button>
+        />
+        <Button
+          color={state.status === LOADING ? "gray" : "hippieGreen"}
+          type="submit"
+          disabled={state.status === LOADING}
+          className="w-full h-9 mb-12"
+        >
+          Cadastrar
+        </Button>
         <div className="flex items-center justify-center flex-col">
           <p className="text-tuna text-base">Já possui uma conta?</p>
-          <a href="/auth/login" className="text-chetwodeBlue hover:underline text-base">Realizar login</a>
+          <Link
+            href="/auth/login"
+            className="text-chetwodeBlue hover:underline text-base"
+          >
+            Realizar login
+          </Link>
         </div>
       </form>
     </>
-  )
+  );
 }
