@@ -38,11 +38,18 @@ export default function SnackBar({ type, message, open, closeSnackBar }: ISnackB
   if (!open) return null
   return (
     <div className={`
-    w-96
-    h-12
+    w-full
+    sm:w-96
+    h-auto
+    sm:h-12
     items-center
     flex
-    absolute top-2 left-2/4 transform -translate-x-2/4
+    absolute 
+    top-0
+    sm:top-2 
+    left-2/4 
+    transform 
+    -translate-x-2/4
     ${snackBarStyles[type]}
     px-4 py-2 
     rounded-sm

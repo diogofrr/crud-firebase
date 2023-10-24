@@ -12,7 +12,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/firebase/config";
 
 interface IForgotPasswordForm {
-  setEmailWasSent: Dispatch<SetStateAction<boolean>>
+  setEmailWasSent: (Dispatch<SetStateAction<boolean>>)
 }
 
 export default function ForgotPasswordForm({ setEmailWasSent }: IForgotPasswordForm) {
@@ -21,7 +21,7 @@ export default function ForgotPasswordForm({ setEmailWasSent }: IForgotPasswordF
   };
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } =
     useFormValidation(initialValues);
-  const { startLoading, stopLoading, state, closeSnackBar, resetStatus } =
+  const { startLoading, stopLoading, state, closeSnackBar } =
     useContext(StatusContext);
 
   const handleValidateAndSendEmail = () => {
@@ -33,7 +33,6 @@ export default function ForgotPasswordForm({ setEmailWasSent }: IForgotPasswordF
       updatedErrors.email = emailFieldValidation(errors, values.email).email;
       
       if (Object.values(updatedErrors).every((error) => error === "")) {
-        startLoading("Validando informações...");
         sendPasswordResetEmail(auth, values.email)
           .then(() => {
             setEmailWasSent(true)

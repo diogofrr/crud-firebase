@@ -21,7 +21,7 @@ export default function AuthLayout({ children }: IAuthLayoutProps) {
     if (session.profileData?.status === AUTHENTICATED) {
       router.push("/");
     }
-  }, [router, session.profileData]);
+  }, [session.profileData?.status]);
 
   if (session.profileData?.status !== UNAUTHENTICATED) {
     return <Loading />;

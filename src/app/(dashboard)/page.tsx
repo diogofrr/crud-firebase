@@ -14,6 +14,8 @@ import { LeftArrowIcon, PlusIcon } from "@/components/Icons";
 import TotalClients from "@/components/TotalClients";
 import Birthdays from "@/components/Birthdays";
 import Calendar from "@/components/Calendar";
+import useSession from "@/hooks/useSession";
+import { LOADING } from "@/constants/constants";
 
 export default function Home() {
   const {
@@ -50,7 +52,7 @@ export default function Home() {
           <Header menuOpen={menuOpen} handleOpenMenu={handleOpenMenu} />
           <main className="flex flex-col my-8">
             {tableIsVisible ? (
-              status === 'loading' ? (
+              status === LOADING ? (
                 <TableSkeleton />
               ) : (
                 <section className={`p-4 bg-white overflow-auto rounded-xl shadow-xl w-full mb-4`}>

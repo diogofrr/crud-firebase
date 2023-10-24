@@ -45,9 +45,11 @@ const SessionProvider = ({ children }: ISessionContextProps) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(`ContextState: ${JSON.stringify(state)}`);
-  }, [state])
+  // useEffect(() => {
+  //   console.log('=========================================================================')
+  //   console.log(`ContextState: ${JSON.stringify(state, null, 2)}`);
+  //   console.log('=========================================================================')
+  // }, [state])
 
   useEffect(() => {
     getLocalSession()
