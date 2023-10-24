@@ -1,62 +1,94 @@
-'use client'
+"use client";
 
 import Field from "./Field";
 import Client from "@/core/Client";
 import Button from "./Button";
 import useFormValidation from "@/hooks/useFormValidation";
 import { STATUS } from "@/types/global";
-import { Spinner } from "@/components/Icons"
+import { Spinner } from "@/components/Icons";
 import { useCallback, useContext } from "react";
-import { StatusContext } from "@/contexts/Status/StatusContext"
-import { formatDateToYYYYMMDD, parseDateString, timestampToDate } from "@/utils/formatDate";
+import { StatusContext } from "@/contexts/Status/StatusContext";
+import {
+  formatDateToYYYYMMDD,
+  parseDateString,
+  timestampToDate,
+} from "@/utils/formatDate";
 import { tel } from "@/utils/masks";
-import { telFieldValidation, birthdatFieldValidation, emailFieldValidation, nameFieldValidation } from "@/utils/validations";
+import {
+  telFieldValidation,
+  birthdatFieldValidation,
+  emailFieldValidation,
+  nameFieldValidation,
+} from "@/utils/validations";
 
 interface IFormProps {
-  client: Client
-  saveClient: (cliente: Client) => void
-  status: STATUS
+  client: Client;
+  saveClient: (cliente: Client) => void;
+  status: STATUS;
 }
 export default function Form({ client, saveClient }: IFormProps) {
   const initialValues = {
     id: client?.id,
-    name: client?.name ?? '',
-    birthday: formatDateToYYYYMMDD(timestampToDate(client?.birthday)) ?? new Date(),
-    tel: client?.tel ?? '',
-    email: client?.email ?? ''
-  }
+    name: client?.name ?? "",
+    birthday:
+      formatDateToYYYYMMDD(timestampToDate(client?.birthday)) ?? new Date(),
+    tel: client?.tel ?? "",
+    email: client?.email ?? "",
+  };
 
-  const { values, handleChangeValue, handleSubmit, handleValidate, errors } = useFormValidation(initialValues)
+  const { values, handleChangeValue, handleSubmit, handleValidate, errors } =
+    useFormValidation(initialValues);
 
-  const context = useContext(StatusContext)
+  const context = useContext(StatusContext);
 
   const handleSaveAndValidateClient = useCallback(() => {
-    context?.startLoading('Salvando cliente...')
+    context?.startLoading("Salvando cliente...");
     handleValidate(() => {
       const updatedErrors = {
-        name: '',
-        birthday: '',
-        tel: '',
-        email: ''
-      }
+        name: "",
+        birthday: "",
+        tel: "",
+        email: "",
+      };
 
-      updatedErrors.name = nameFieldValidation(errors, values.name).name
-      updatedErrors.birthday = birthdatFieldValidation(errors, values.birthday.toString()).birthday
-      updatedErrors.tel = telFieldValidation(errors, values.tel).tel
-      updatedErrors.email = emailFieldValidation(errors, values.email).email
+      updatedErrors.name = nameFieldValidation(errors, values.name).name;
+      updatedErrors.birthday = birthdatFieldValidation(
+        errors,
+        values.birthday.toString()
+      ).birthday;
+      updatedErrors.tel = telFieldValidation(errors, values.tel).tel;
+      updatedErrors.email = emailFieldValidation(errors, values.email).email;
 
-      if (Object.values(updatedErrors).every(error => error === '')) {
-        saveClient?.(new Client(values.name, parseDateString(values.birthday.toString()), values.tel, values.email, values.id))
-      }  else {
+      if (Object.values(updatedErrors).every((error) => error === "")) {
+        saveClient?.(
+          new Client(
+            values.name,
+            parseDateString(values.birthday.toString()),
+            values.tel,
+            values.email,
+            values.id
+          )
+        );
+      } else {
         context?.stopLoading({
           status: "error",
-          message: "Preencha os campos corretamente."
-        })
+          message: "Preencha os campos corretamente.",
+        });
       }
-    
-      return updatedErrors
-    })
-  }, [context, errors, handleValidate, saveClient, values.birthday, values.email, values.id, values.name, values.tel])
+
+      return updatedErrors;
+    });
+  }, [
+    context,
+    errors,
+    handleValidate,
+    saveClient,
+    values.birthday,
+    values.email,
+    values.id,
+    values.name,
+    values.tel,
+  ]);
 
   return (
     <>
@@ -124,19 +156,25 @@ export default function Form({ client, saveClient }: IFormProps) {
         <div className="flex justify-end mt-7">
           <Button
             type="submit"
-            color={context?.state.status === 'loading' ? 'gray' : 'hippieGreen'}
+            color={context?.state.status === "loading" ? "gray" : "hippieGreen"}
             className="w-full"
-            disabled={context?.state.status === 'loading'}
+            disabled={context?.state.status === "loading"}
           >
-            {context?.state.status === 'loading' ? (
-              <Spinner color="fill-hippieGreen-700" width="w-5" height="w-5"  className="mx-5"/>
-            ) 
-            : (
-              values.id ? 'ALTERAR': 'SALVAR'
+            {context?.state.status === "loading" ? (
+              <Spinner
+                color="fill-hippieGreen-700"
+                width="w-5"
+                height="w-5"
+                className="mx-5"
+              />
+            ) : values.id ? (
+              "ALTERAR"
+            ) : (
+              "SALVAR"
             )}
           </Button>
         </div>
       </form>
     </>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import useFormValidation from "@/hooks/useFormValidation";
 import { StatusContext } from "@/contexts/Status/StatusContext";
 import {
@@ -11,7 +11,6 @@ import Field from "./Field";
 import Button from "./Button";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import SnackBar from "./SnackBar";
-import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/config";
 import useSession from "@/hooks/useSession";
 import { LOADING } from "@/constants/constants";
@@ -24,7 +23,7 @@ export default function LoginForm() {
   };
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } =
     useFormValidation(initialValues);
-  const { startLoading, stopLoading, state, closeSnackBar, resetStatus } =
+  const { startLoading, stopLoading, state, closeSnackBar } =
     useContext(StatusContext);
   const { getUserInformation } = useSession();
 

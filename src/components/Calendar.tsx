@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
-import Client from '@/core/Client';
+import { useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "./Icons";
+import Client from "@/core/Client";
 
 interface ICalendarItemProps {
-  children: React.ReactNode
-  disabled: boolean
+  children: React.ReactNode;
+  disabled: boolean;
 }
 
 interface ICalendarProps {
-  clients: Client[]
+  clients: Client[];
 }
 
 export default function Calendar({ clients }: ICalendarProps) {
@@ -20,8 +20,14 @@ export default function Calendar({ clients }: ICalendarProps) {
 
   function CalendarItem({ children, disabled }: ICalendarItemProps) {
     return (
-      <p className={`${disabled ? 'text-gray-600' : 'text-tuna'} z-10 text-xs font-bold text-center`}>{children}</p>
-    )
+      <p
+        className={`${
+          disabled ? "text-gray-600" : "text-tuna"
+        } z-10 text-xs font-bold text-center`}
+      >
+        {children}
+      </p>
+    );
   }
 
   const renderCalendar = () => {
@@ -61,7 +67,7 @@ export default function Calendar({ clients }: ICalendarProps) {
         day
       );
 
-      const formattedDay = day.toString().padStart(2, '0')
+      const formattedDay = day.toString().padStart(2, "0");
 
       calendarDays.push(
         <CalendarItem key={day} disabled={false}>
@@ -71,18 +77,51 @@ export default function Calendar({ clients }: ICalendarProps) {
     }
 
     return calendarDays;
-  }
+  };
 
   return (
     <div className="bg-white w-full md:w-56 h-80 md:h-64 shadow-xl rounded-2xl p-8 md:p-4 mb-4">
       <header className="flex justify-between mb-4">
-        <p className="text-tuna capitalize font-bold">{selectedDate.toLocaleString('default', { month: 'long' })} {selectedDate.getFullYear()}</p>
+        <p className="text-tuna capitalize font-bold">
+          {selectedDate.toLocaleString("default", { month: "long" })}{" "}
+          {selectedDate.getFullYear()}
+        </p>
         <div className="flex">
-          <button type="button" onClick={() => handleDateChange(new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1))}>
-            <ChevronLeftIcon width="w-8" height="h-8" className="text-tuna hover:text-white hover:bg-tuna rounded-full p-1 cursor-pointer" />
+          <button
+            type="button"
+            onClick={() =>
+              handleDateChange(
+                new Date(
+                  selectedDate.getFullYear(),
+                  selectedDate.getMonth() - 1,
+                  1
+                )
+              )
+            }
+          >
+            <ChevronLeftIcon
+              width="w-8"
+              height="h-8"
+              className="text-tuna hover:text-white hover:bg-tuna rounded-full p-1 cursor-pointer"
+            />
           </button>
-          <button type="button" onClick={() => handleDateChange(new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1))}>
-            <ChevronRightIcon width="w-8" height="h-8" className="text-tuna hover:text-white hover:bg-tuna rounded-full p-1 cursor-pointer" />
+          <button
+            type="button"
+            onClick={() =>
+              handleDateChange(
+                new Date(
+                  selectedDate.getFullYear(),
+                  selectedDate.getMonth() + 1,
+                  1
+                )
+              )
+            }
+          >
+            <ChevronRightIcon
+              width="w-8"
+              height="h-8"
+              className="text-tuna hover:text-white hover:bg-tuna rounded-full p-1 cursor-pointer"
+            />
           </button>
         </div>
       </header>
@@ -95,10 +134,7 @@ export default function Calendar({ clients }: ICalendarProps) {
         <p className="text-tuna text-xs text-center font-bold">S</p>
         <p className="text-red-400 text-xs text-center font-bold">S</p>
       </div>
-      <div className="grid grid-cols-7 gap-4 md:gap-2">
-        {renderCalendar()}
-      </div>
+      <div className="grid grid-cols-7 gap-4 md:gap-2">{renderCalendar()}</div>
     </div>
-  )
+  );
 }
-

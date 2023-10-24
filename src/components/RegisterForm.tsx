@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import useFormValidation from "@/hooks/useFormValidation";
 import { StatusContext } from "@/contexts/Status/StatusContext";
 import {
@@ -15,7 +15,6 @@ import SnackBar from "./SnackBar";
 import useSession from "@/hooks/useSession";
 import User from "@/core/User";
 import { auth } from "@/firebase/config";
-import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { LOADING } from "@/constants/constants";
 import Link from "next/link";
@@ -30,7 +29,7 @@ export default function RegisterForm() {
 
   const { values, handleChangeValue, handleSubmit, handleValidate, errors } =
     useFormValidation(initialValues);
-  const { state, startLoading, stopLoading, closeSnackBar, resetStatus } =
+  const { state, startLoading, stopLoading, closeSnackBar } =
     useContext(StatusContext);
   const { createUserInformation } = useSession();
 
@@ -91,7 +90,17 @@ export default function RegisterForm() {
 
       return updatedErrors;
     });
-  }, [createUserInformation, errors, handleValidate, startLoading, stopLoading, values.confirmPassword, values.email, values.name, values.password]);
+  }, [
+    createUserInformation,
+    errors,
+    handleValidate,
+    startLoading,
+    stopLoading,
+    values.confirmPassword,
+    values.email,
+    values.name,
+    values.password,
+  ]);
 
   return (
     <>

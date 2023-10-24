@@ -26,14 +26,12 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-input[type=number]::-webkit-inner-spin-button { 
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  
 }
-input[type=number] { 
- -moz-appearance: textfield;
- appearance: textfield;
-
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 ::-webkit-scrollbar {
@@ -42,11 +40,11 @@ input[type=number] {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #8184CC; 
+  background: #8184cc;
   border-radius: 4px;
 }

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 interface IWindowSizeState {
-  width: number | undefined
-  height: number | undefined
+  width: number | undefined;
+  height: number | undefined;
 }
 
 export default function useWindowSize() {

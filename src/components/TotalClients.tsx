@@ -1,5 +1,5 @@
 interface ITotalClientsProps {
-  clientsLength: number
+  clientsLength: number;
 }
 
 export default function TotalClients({ clientsLength }: ITotalClientsProps) {
@@ -8,5 +8,5 @@ export default function TotalClients({ clientsLength }: ITotalClientsProps) {
       <p className="text-tuna font-medium text-lg">Total de Registros</p>
       <p className="text-tuna text-7xl">{clientsLength}</p>
     </div>
-  )
+  );
 }

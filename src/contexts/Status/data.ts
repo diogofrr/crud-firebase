@@ -1,9 +1,9 @@
-import { STATUS } from "@/types/global"
+import { STATUS } from "@/types/global";
 
 const initialState = {
-  status: 'loading' as STATUS,
-  message: '',
-  snackbarOpen: false
-}
+  status: "idle" as STATUS,
+  message: "",
+  snackbarOpen: false,
+};
 
-export default initialState
+export default initialState;

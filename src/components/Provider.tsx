@@ -1,18 +1,16 @@
-'use client'
+"use client";
 
-import SessionProvider from "@/contexts/Session/SessionContext"
-import StatusProvider from "@/contexts/Status/StatusContext"
+import SessionProvider from "@/contexts/Session/SessionContext";
+import StatusProvider from "@/contexts/Status/StatusContext";
 
 interface IProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default function Provider({ children }: IProviderProps) {
   return (
     <StatusProvider>
-      <SessionProvider>
-        {children}
-      </SessionProvider>
+      <SessionProvider>{children}</SessionProvider>
     </StatusProvider>
-  )
+  );
 }

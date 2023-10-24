@@ -1,25 +1,32 @@
 import User from "@/core/User";
 import IUserRepo from "@/core/UserRepo";
 import { firestore } from "../config";
-import { QueryDocumentSnapshot, SnapshotOptions, addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  QueryDocumentSnapshot,
+  SnapshotOptions,
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 export default class UserCollection implements IUserRepo {
-
   #converter = {
     toFirestore({ name, profilePicture, email }: User) {
       return {
         name,
         profilePicture,
-        email
+        email,
       };
     },
-    fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions ) {
+    fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions) {
       const { name, profilePicture, email } = snapshot.data(options);
       return new User(name, profilePicture, email, snapshot.id);
-    }
+    },
   };
-  
+
   private userCollection() {
     return collection(firestore, "users").withConverter(this.#converter);
   }
@@ -27,7 +34,7 @@ export default class UserCollection implements IUserRepo {
   async create(user: User) {
     const auth = getAuth();
     const userAuth = auth.currentUser;
-    
+
     if (userAuth) {
       user.uid = userAuth.uid;
 
@@ -48,14 +55,21 @@ export default class UserCollection implements IUserRepo {
     const session = auth.currentUser;
 
     if (session) {
-      const userSnapshot = await getDoc(doc(this.userCollection(), session.uid))
+      const userSnapshot = await getDoc(
+        doc(this.userCollection(), session.uid)
+      );
 
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
-        const user = new User(userData.name, userData.profilePicture, userData.email, session.uid);
+        const user = new User(
+          userData.name,
+          userData.profilePicture,
+          userData.email,
+          session.uid
+        );
         return {
           session,
-          user
+          user,
         };
       } else {
         throw new Error("Dados do usuário não encontrados no Firestore");

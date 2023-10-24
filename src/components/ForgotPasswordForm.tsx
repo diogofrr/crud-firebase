@@ -12,10 +12,12 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/firebase/config";
 
 interface IForgotPasswordForm {
-  setEmailWasSent: (Dispatch<SetStateAction<boolean>>)
+  setEmailWasSent: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ForgotPasswordForm({ setEmailWasSent }: IForgotPasswordForm) {
+export default function ForgotPasswordForm({
+  setEmailWasSent,
+}: IForgotPasswordForm) {
   const initialValues = {
     email: "",
   };
@@ -29,24 +31,24 @@ export default function ForgotPasswordForm({ setEmailWasSent }: IForgotPasswordF
       const updatedErrors = {
         email: "",
       };
-      
+
       updatedErrors.email = emailFieldValidation(errors, values.email).email;
-      
+
       if (Object.values(updatedErrors).every((error) => error === "")) {
         sendPasswordResetEmail(auth, values.email)
           .then(() => {
-            setEmailWasSent(true)
+            setEmailWasSent(true);
             stopLoading({
               status: "success",
               message: "Email enviado com sucesso.",
-            })
+            });
           })
           .catch(() => {
             stopLoading({
               status: "error",
               message: "Houve um erro ao realizar o envio do email.",
             });
-          })
+          });
       } else {
         stopLoading({
           status: "error",

@@ -1,8 +1,8 @@
-const actions = { 
-  START_LOADING: 'START_LOADING',
-  STOP_LOADING: 'STOP_LOADING',
-  RESET_STATUS: 'RESET_STATUS',
-  CLOSE_SNACKBAR: 'CLOSE_SNACKBAR'
-}
+const actions = {
+  START_LOADING: "START_LOADING",
+  STOP_LOADING: "STOP_LOADING",
+  RESET_STATUS: "RESET_STATUS",
+  CLOSE_SNACKBAR: "CLOSE_SNACKBAR",
+};
 
-export default actions
+export default actions;

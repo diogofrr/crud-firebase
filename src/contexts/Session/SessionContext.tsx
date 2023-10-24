@@ -1,9 +1,15 @@
-'use client'
+"use client";
 
-import { User as UserAuth } from "firebase/auth"
-import User from "@/core/User"
+import { User as UserAuth } from "firebase/auth";
+import User from "@/core/User";
 
-import { createContext, useReducer, ReactNode, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+  useCallback,
+} from "react";
 import initialState, { IInitialState } from "./data";
 import reducer from "./reducer";
 import { ILocalSessionResponse, SessionStatus } from "@/types/login";
@@ -33,13 +39,13 @@ const SessionProvider = ({ children }: ISessionContextProps) => {
         await fetch("/api/auth/get-session")
       ).json();
 
-        if (data) {
-          saveUserData(data.user);
-          saveSessionData(data.session);
-          changeStatus(AUTHENTICATED)
-        } else {
-          changeStatus(UNAUTHENTICATED);
-        }
+      if (data) {
+        saveUserData(data.user);
+        saveSessionData(data.session);
+        changeStatus(AUTHENTICATED);
+      } else {
+        changeStatus(UNAUTHENTICATED);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -52,7 +58,7 @@ const SessionProvider = ({ children }: ISessionContextProps) => {
   // }, [state])
 
   useEffect(() => {
-    getLocalSession()
+    getLocalSession();
   }, [getLocalSession]);
 
   const changeStatus = (status: SessionStatus) => {
@@ -77,7 +83,7 @@ const SessionProvider = ({ children }: ISessionContextProps) => {
     clearSession,
     saveUserData,
     saveSessionData,
-    getLocalSession
+    getLocalSession,
   };
 
   return (

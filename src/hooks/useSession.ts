@@ -3,7 +3,7 @@ import User from "@/core/User";
 import UserCollection from "@/firebase/db/UserCollection";
 import IUserRepo from "@/core/UserRepo";
 import { SessionContext } from "@/contexts/Session/SessionContext";
-import { ILoginSession } from "@/types/login"; 
+import { ILoginSession } from "@/types/login";
 
 export default function useSession() {
   const repo: IUserRepo = useMemo(() => new UserCollection(), []);
@@ -20,8 +20,8 @@ export default function useSession() {
         cache: "no-cache",
         redirect: "follow",
       })
-      .then(() => context?.getLocalSession())
-      .catch((err) => console.error(err));
+        .then(() => context?.getLocalSession())
+        .catch((err) => console.error(err));
     },
     [context]
   );
@@ -69,12 +69,11 @@ export default function useSession() {
       .catch((err) => console.error(err));
   }, [context]);
 
-
   return {
     profileData: context?.state,
     getUserInformation,
     updateUserInformation,
     createUserInformation,
-    signOut
+    signOut,
   };
 }

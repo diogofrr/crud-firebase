@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { createContext, useReducer, ReactNode, useEffect } from "react";
 import initialState from "./data";
@@ -13,7 +13,7 @@ interface IStatusContextType {
   startLoading: (message: string) => void;
   stopLoading: (responseStatus: IStopLoadingPayload) => void;
   resetStatus: () => void;
-  closeSnackBar: () => void
+  closeSnackBar: () => void;
 }
 
 export const StatusContext = createContext<IStatusContextType>({
@@ -21,48 +21,48 @@ export const StatusContext = createContext<IStatusContextType>({
   startLoading: () => null,
   stopLoading: () => null,
   resetStatus: () => null,
-  closeSnackBar: () => null
+  closeSnackBar: () => null,
 });
 
 const StatusProvider = ({ children }: IStatusContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    console.log('--------------------------------------')
-    console.log(`StatusContext: ${JSON.stringify(state, null, 2)}`)
-    console.log('--------------------------------------')
-  }, [state])
+    console.log("--------------------------------------");
+    console.log(`StatusContext: ${JSON.stringify(state, null, 2)}`);
+    console.log("--------------------------------------");
+  }, [state]);
 
   const startLoading = (payload: string) => {
-    dispatch({ type: 'START_LOADING', payload });
+    dispatch({ type: "START_LOADING", payload });
   };
 
   const stopLoading = (payload: IStopLoadingPayload) => {
     setTimeout(() => {
-      dispatch({ type: 'STOP_LOADING', payload });
-    }, 1000)
+      dispatch({ type: "STOP_LOADING", payload });
+    }, 1000);
   };
 
   const resetStatus = () => {
     dispatch({
-      type: 'RESET_STATUS',
-      payload: 'idle'
+      type: "RESET_STATUS",
+      payload: "idle",
     });
   };
 
   const closeSnackBar = () => {
     dispatch({
-      type: 'CLOSE_SNACKBAR',
-      payload: false
-    })
-  }
+      type: "CLOSE_SNACKBAR",
+      payload: false,
+    });
+  };
 
   const contextValue: IStatusContextType = {
     state,
     startLoading,
     stopLoading,
     resetStatus,
-    closeSnackBar
+    closeSnackBar,
   };
 
   return (

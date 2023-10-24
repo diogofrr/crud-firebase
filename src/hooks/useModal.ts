@@ -1,19 +1,19 @@
-import { useState } from "react"
+import { useState } from "react";
 
 export default function useModal() {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = () => {
-    setOpenModal(true)
-  }
+    setOpenModal(true);
+  };
 
   const handleCloseModal = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   return {
     handleOpenModal,
     handleCloseModal,
-    openModal
-  }
+    openModal,
+  };
 }

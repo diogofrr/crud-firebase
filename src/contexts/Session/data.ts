@@ -1,19 +1,19 @@
-import { User as UserAuth } from "firebase/auth"
-import User from "@/core/User"
-import { LOADING } from "@/constants/constants"
+import { User as UserAuth } from "firebase/auth";
+import User from "@/core/User";
+import { LOADING } from "@/constants/constants";
 
-type STATUS = 'authenticated' | 'unauthenticated' | 'loading'
+type STATUS = "authenticated" | "unauthenticated" | "loading";
 
 export interface IInitialState {
-  status: STATUS,
-  sessionData: UserAuth | null,
-  userData: User | null
+  status: STATUS;
+  sessionData: UserAuth | null;
+  userData: User | null;
 }
 
 const initialState: IInitialState = {
   status: LOADING,
   sessionData: null,
-  userData: null
-}
+  userData: null,
+};
 
-export default initialState
+export default initialState;

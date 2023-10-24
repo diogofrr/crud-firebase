@@ -1,31 +1,28 @@
-'use client'
+"use client";
 
-import Loading from "@/components/Loading"
-import { AUTHENTICATED } from "@/constants/constants"
-import { StatusContext } from "@/contexts/Status/StatusContext"
-import useSession from "@/hooks/useSession"
-import { useRouter } from "next/navigation"
-import { useContext, useLayoutEffect } from "react"
+import Loading from "@/components/Loading";
+import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants";
+import useSession from "@/hooks/useSession";
+import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
 
 interface IDashboardLayoutProps {
-    children: JSX.Element
+  children: JSX.Element;
 }
 
 export default function DashboardLayout({ children }: IDashboardLayoutProps) {
-    const router = useRouter()
-    const session = useSession()
-    const status = useContext(StatusContext)
+  const router = useRouter();
+  const session = useSession();
 
-    useLayoutEffect(() => {
-        status.resetStatus()
-        if (session.profileData?.status !== AUTHENTICATED) {
-            return router.push('/auth/login')
-        }
-    }, [session.profileData?.status])
-    
-    if (session.profileData?.status !== AUTHENTICATED) {
-        return <Loading />
+  useLayoutEffect(() => {
+    if (session.profileData?.status === UNAUTHENTICATED) {
+      return router.push("/auth/login");
     }
+  }, [session.profileData?.status]);
 
-    return <>{children}</>
+  if (session.profileData?.status !== AUTHENTICATED) {
+    return <Loading />;
+  }
+
+  return <>{children}</>;
 }
