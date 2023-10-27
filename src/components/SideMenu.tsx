@@ -5,6 +5,7 @@ import {
   LogoutIcon,
   UserIcon
 } from "./Icons";
+import Link from "next/link";
 
 interface ISideMenuProps {
   menuOpen: boolean;
@@ -37,15 +38,15 @@ export default function SideMenu({
         <p className="text-tuna font-normal text-lg">Cadastro de Usuários</p>
       </div>
       <nav className="mt-12 min-w-max">
-        <div className="flex no-underline text-tuna hover:text-chetwodeBlue">
+        <Link className="flex no-underline text-tuna hover:text-chetwodeBlue" href="/">
           <UserIcon className="mr-2" />
           Início
-        </div>
+        </Link>
         <hr className="text-tuna border-tuna my-4 border-2 rounded-xl" />
-        <div className="flex no-underline text-tuna hover:text-chetwodeBlue mb-4">
+        <Link href="/profile" className="flex no-underline text-tuna hover:text-chetwodeBlue mb-4">
           <ConfigIcon className="mr-2" />
           Configurações
-        </div>
+        </Link>
         <button
           type="button"
           onClick={() => session.signOut()}

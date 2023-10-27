@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { User as UserAuth } from "firebase/auth";
 import User from "@/core/User";
@@ -9,6 +9,7 @@ import {
   ReactNode,
   useEffect,
   useCallback,
+  useState,
 } from "react";
 import initialState, { IInitialState } from "./data";
 import reducer from "./reducer";
@@ -31,6 +32,7 @@ interface ISessionContextType {
 export const SessionContext = createContext<ISessionContextType | null>(null);
 
 const SessionProvider = ({ children }: ISessionContextProps) => {
+  const [userCacheUserInformation, setCacheUserInformation] = useState<null | IInitialState>(null)
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const getLocalSession = useCallback(async () => {

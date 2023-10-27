@@ -11,8 +11,8 @@ export default class Client {
     birthday: Date,
     tel: string,
     email: string,
-    uid: string,
-    id: string = ""
+    id: string = "",
+    uid: string = ""
   ) {
     this.#id = id;
     this.#name = name;
@@ -23,7 +23,7 @@ export default class Client {
   }
 
   static empty() {
-    return new Client("", new Date(), "", "", "");
+    return new Client("", new Date(), "", "", "", "");
   }
 
   get id() {
@@ -48,5 +48,9 @@ export default class Client {
 
   get uid() {
     return this.#uid;
+  }
+
+  set uid(uid: string) {
+    this.#uid = uid
   }
 }

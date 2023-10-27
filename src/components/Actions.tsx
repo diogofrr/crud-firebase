@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import Client from "@/core/Client";
 import { EditIcon, TrashIcon } from "./Icons";

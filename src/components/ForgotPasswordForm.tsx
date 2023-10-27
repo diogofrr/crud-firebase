@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import useFormValidation from "@/hooks/useFormValidation";
 import Field from "./Field";

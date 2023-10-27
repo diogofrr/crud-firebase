@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import ForgotPasswordForm from "@/components/ForgotPasswordForm";
 import { EnvelopeIcon } from "@/components/Icons";

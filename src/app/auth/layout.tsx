@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import Loading from "@/components/Loading";
 import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants";
+import Loading from "@/components/Loading";
 import useSession from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect } from "react";

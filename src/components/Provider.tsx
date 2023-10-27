@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import SessionProvider from "@/contexts/Session/SessionContext";
 import StatusProvider from "@/contexts/Status/StatusContext";

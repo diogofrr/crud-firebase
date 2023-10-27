@@ -11,6 +11,7 @@ import {
   getDocs,
   setDoc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 export default class ClientCollection implements IClientRepo {
   #converter = {
@@ -34,18 +35,27 @@ export default class ClientCollection implements IClientRepo {
   }
 
   async save(client: Client) {
-    if (client.id) {
-      await setDoc(doc(this.clientCollection(), client.id), client);
-      return client;
+    const auth = getAuth();
+    const session = auth.currentUser;
+
+    if (session) {
+      client.uid = session.uid
+
+      if (client.id) {
+        await setDoc(doc(this.clientCollection(), client.id), client);
+        return client;
+      } else {
+        const clienteRef = await addDoc(this.clientCollection(), client);
+        return new Client(
+          client.name,
+          client.birthday,
+          client.tel,
+          client.email,
+          clienteRef.id
+        );
+      }
     } else {
-      const clienteRef = await addDoc(this.clientCollection(), client);
-      return new Client(
-        client.name,
-        client.birthday,
-        client.tel,
-        client.email,
-        clienteRef.id
-      );
+      throw new Error("Usuário não autenticado");
     }
   }
 

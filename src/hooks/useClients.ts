@@ -3,7 +3,6 @@ import IClientRepo from "@/core/ClientRepo";
 import ClientCollection from "@/firebase/db/ClientCollection";
 import {
   useState,
-  useEffect,
   useContext,
   useCallback,
   useMemo,
@@ -11,7 +10,6 @@ import {
 } from "react";
 import useVisibility from "./useVisibility";
 import { StatusContext } from "@/contexts/Status/StatusContext";
-import { start } from "repl";
 
 export default function useClients() {
   const repo: IClientRepo = useMemo(() => new ClientCollection(), []);
@@ -37,6 +35,7 @@ export default function useClients() {
       status: "success",
       message: "",
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const newClient = useCallback(() => {
@@ -68,11 +67,7 @@ export default function useClients() {
             message: "Falha ao excluir cliente.",
           })
         )
-        .finally(() =>
-          setTimeout(() => {
-            context?.resetStatus();
-          }, 2500)
-        );
+        .finally(() => context.resetStatus());
       updateClients();
     },
     [context, repo, updateClients]
@@ -94,11 +89,7 @@ export default function useClients() {
             message: "Falha ao salvar cliente.",
           })
         )
-        .finally(() =>
-          setTimeout(() => {
-            context?.resetStatus();
-          }, 2500)
-        );
+        .finally(() =>  context.resetStatus());
       updateClients();
     },
     [context, repo, updateClients]

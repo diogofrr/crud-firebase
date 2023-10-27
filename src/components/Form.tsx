@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import Field from "./Field";
 import Client from "@/core/Client";

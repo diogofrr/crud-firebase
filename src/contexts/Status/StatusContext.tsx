@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { createContext, useReducer, ReactNode, useEffect } from "react";
+import { createContext, useReducer, ReactNode, useEffect, useState, useCallback } from "react";
 import initialState from "./data";
 import reducer, { IStopLoadingPayload } from "./reducer";
 
@@ -32,31 +32,33 @@ const StatusProvider = ({ children }: IStatusContextProps) => {
     console.log(`StatusContext: ${JSON.stringify(state, null, 2)}`);
     console.log("--------------------------------------");
   }, [state]);
-
+  
   const startLoading = (payload: string) => {
     dispatch({ type: "START_LOADING", payload });
   };
-
+  
   const stopLoading = (payload: IStopLoadingPayload) => {
     setTimeout(() => {
       dispatch({ type: "STOP_LOADING", payload });
-    }, 1000);
+    }, 1000)
   };
-
+  
   const resetStatus = () => {
-    dispatch({
-      type: "RESET_STATUS",
-      payload: "idle",
-    });
+    setTimeout(() => {
+      dispatch({
+        type: "RESET_STATUS",
+        payload: "idle",
+      });
+    }, 2500)
   };
-
-  const closeSnackBar = () => {
+  
+  const closeSnackBar = useCallback(() => {
     dispatch({
       type: "CLOSE_SNACKBAR",
       payload: false,
     });
-  };
-
+  }, []);
+  
   const contextValue: IStatusContextType = {
     state,
     startLoading,
@@ -64,7 +66,7 @@ const StatusProvider = ({ children }: IStatusContextProps) => {
     resetStatus,
     closeSnackBar,
   };
-
+  
   return (
     <StatusContext.Provider value={contextValue}>
       {children}

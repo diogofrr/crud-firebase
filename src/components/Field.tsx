@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { FormErrors } from "@/hooks/useFormValidation";
 import { ErrorIcon, EyeIcon, EyeSlashIcon } from "./Icons";
@@ -21,7 +21,7 @@ interface IFieldProps {
   validation?: (errors: FormErrors, value: any, comparativeValue?: any) => void;
   defaultValue?: any;
   inputMask?: (event: React.FormEvent<HTMLInputElement>) => string;
-  errors: FormErrors;
+  errors?: FormErrors;
   baseColor?: "primary" | "secondary";
   className?: string;
   comparativeValue?: any;
@@ -38,7 +38,7 @@ export default function Field({
   onChange,
   name,
   id,
-  errors,
+  errors = {},
   validation,
   placeholder = "",
   min = "",
