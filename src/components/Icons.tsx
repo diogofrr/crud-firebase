@@ -517,3 +517,50 @@ export const EnvelopeIcon = ({
     </svg>
   );
 };
+
+export const CamIcon = ({
+  className,
+  width = "w-6",
+  height = "h-6",
+}: IIconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={`${width} ${height} ${className}`}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+      />
+    </svg>
+  );
+};
+
+export const VerfiedIcon = ({
+  width = "w-6",
+  height = "h-6",
+  className
+}: IIconProps) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className={`${width} ${height} ${className}`} viewBox="0 0 12 12" fill="none">
+      <g clipPath="url(#clip0_19_75)">
+        <path d="M11.5 6L10.28 4.605L10.45 2.76L8.645 2.35L7.7 0.75L6 1.48L4.3 0.75L3.355 2.345L1.55 2.75L1.72 4.6L0.5 6L1.72 7.395L1.55 9.245L3.355 9.655L4.3 11.25L6 10.515L7.7 11.245L8.645 9.65L10.45 9.24L10.28 7.395L11.5 6ZM5.045 8.36L3.145 6.455L3.885 5.715L5.045 6.88L7.97 3.945L8.71 4.685L5.045 8.36Z" fill="#1DA1F2"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_19_75">
+          <rect width="12" height="12" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};

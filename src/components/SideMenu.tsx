@@ -1,3 +1,5 @@
+'use client'
+
 import useSession from "@/hooks/useSession";
 import {
   ConfigIcon,
@@ -6,6 +8,7 @@ import {
   UserIcon
 } from "./Icons";
 import Link from "next/link";
+import useWindowSize from "@/hooks/useWindowSize";
 
 interface ISideMenuProps {
   menuOpen: boolean;
@@ -17,6 +20,13 @@ export default function SideMenu({
   menuOpen,
 }: ISideMenuProps) {
   const session = useSession();
+  const windowSize = useWindowSize();
+  
+  const handleCloseMenuOnMobile = () => {
+    if (windowSize.width && windowSize.width <= 1024) {
+      handleCloseMenu();
+    }
+  }
 
   return (
     <aside
@@ -38,12 +48,12 @@ export default function SideMenu({
         <p className="text-tuna font-normal text-lg">Cadastro de Usuários</p>
       </div>
       <nav className="mt-12 min-w-max">
-        <Link className="flex no-underline text-tuna hover:text-chetwodeBlue" href="/">
+        <Link className="flex no-underline text-tuna hover:text-chetwodeBlue" href="/" onClick={handleCloseMenuOnMobile}>
           <UserIcon className="mr-2" />
           Início
         </Link>
         <hr className="text-tuna border-tuna my-4 border-2 rounded-xl" />
-        <Link href="/profile" className="flex no-underline text-tuna hover:text-chetwodeBlue mb-4">
+        <Link href="/profile" className="flex no-underline text-tuna hover:text-chetwodeBlue mb-4" onClick={handleCloseMenuOnMobile}>
           <ConfigIcon className="mr-2" />
           Configurações
         </Link>

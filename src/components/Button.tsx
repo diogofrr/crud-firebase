@@ -2,7 +2,7 @@
 
 interface IButtonProps {
   children: any;
-  color?: "gray" | "hippieGreen" | "red";
+  color?: "gray" | "hippieGreen" | "red" | "yellow";
   className?: string;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
@@ -13,6 +13,7 @@ const buttonColors = {
   gray: "bg-gray-200 hover:bg-gray-500 text-gray-700",
   hippieGreen: "bg-hippieGreen-500 hover:bg-hippieGreen-700 text-white",
   red: "bg-red-500 hover:bg-red-700 text-white",
+  yellow: "bg-yellow-500 hover:bg-yellow-700 text-white"
 };
 
 export default function Button({

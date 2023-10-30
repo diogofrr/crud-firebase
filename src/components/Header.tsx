@@ -9,6 +9,7 @@ interface IHeaderProps {
 
 export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
   const { profileData } = useSession();
+  const name = profileData?.userData?.name.split(' ')
 
   return (
     <header className="flex items-center pt-8 h-20">
@@ -33,10 +34,10 @@ export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
             fill
           />
         ) : (
-          <span className="w-8 h-8 bg-white rounded-full mr-2"></span>
+          <span className="w-8 h-8 bg-gray-100 rounded-full mr-2"></span>
         )}
         <p className="text-tuna mr-2 capitalize">
-          {profileData?.userData?.name}
+          {name && `${name[0]} ${name[name.length - 1][0]}.`}
         </p>
       </span>
     </header>

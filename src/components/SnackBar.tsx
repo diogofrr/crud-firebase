@@ -12,6 +12,7 @@ interface ISnackBar {
   message: string;
   open: boolean;
   closeSnackBar: () => void;
+  floating?: boolean;
 }
 
 export default function SnackBar({
@@ -19,6 +20,7 @@ export default function SnackBar({
   message,
   open,
   closeSnackBar,
+  floating = true
 }: ISnackBar) {
   const snackBarStyles = {
     loading: "bg-blue-50",
@@ -48,22 +50,25 @@ export default function SnackBar({
   return (
     <div
       className={`
-    w-full
-    sm:w-96
-    h-auto
-    sm:h-12
-    items-center
-    flex
-    absolute 
-    top-0
-    sm:top-2 
-    left-2/4 
-    transform 
-    -translate-x-2/4
-    ${snackBarStyles[type]}
-    px-4 py-2 
-    rounded-sm
-    `}
+      ${snackBarStyles[type]}
+        w-full
+        sm:w-96
+        h-auto
+        sm:h-12
+        flex
+        items-center
+        rounded-sm
+        px-4 py-4
+
+        ${floating && (` 
+          top-0
+          sm:top-2 
+          left-2/4 
+          absolute 
+          transform 
+          -translate-x-2/4
+        `)}
+      `}
     >
       <span>{snackBarIcons[type]}</span>
       <p className={`${snackBarTexts[type]} ml-2`}>{message}</p>

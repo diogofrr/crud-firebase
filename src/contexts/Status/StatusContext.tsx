@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useReducer, ReactNode, useEffect, useState, useCallback } from "react";
+import { createContext, useReducer, ReactNode, useCallback } from "react";
 import initialState from "./data";
 import reducer, { IStopLoadingPayload } from "./reducer";
 
@@ -27,11 +27,11 @@ export const StatusContext = createContext<IStatusContextType>({
 const StatusProvider = ({ children }: IStatusContextProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    console.log("--------------------------------------");
-    console.log(`StatusContext: ${JSON.stringify(state, null, 2)}`);
-    console.log("--------------------------------------");
-  }, [state]);
+  // useEffect(() => {
+  //   console.log("--------------------------------------");
+  //   console.log(`StatusContext: ${JSON.stringify(state, null, 2)}`);
+  //   console.log("--------------------------------------");
+  // }, [state]);
   
   const startLoading = (payload: string) => {
     dispatch({ type: "START_LOADING", payload });

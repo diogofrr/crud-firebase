@@ -40,6 +40,10 @@ export default class User {
     this.#name = name;
   }
 
+  set email(email) {
+    this.#email = email;
+  }
+
   set profilePicture(profilePicture) {
     this.#profilePicture = profilePicture;
   }
