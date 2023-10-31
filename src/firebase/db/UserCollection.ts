@@ -67,6 +67,12 @@ export default class UserCollection implements IUserRepo {
           userData.email,
           session.uid
         );
+        
+        if (session.email && user.email !== session.email) {
+          user.email = session.email;
+          this.update(user)
+        }
+
         return {
           session,
           user,

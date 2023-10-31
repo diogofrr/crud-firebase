@@ -89,16 +89,11 @@ export default function Profile() {
           if (session.profileData?.userData) {
             const user = session.profileData.userData;
             user.email = values.email;
-
-            session
-              .updateUserInformation(user)
-              .then(() => {
-                stopLoading({
-                  status: "success",
-                  message: "Verifique seu email para finalizar a alteração.",
-                });
-              })
-              .then(() => session.signOut());
+            stopLoading({
+              status: "success",
+              message: "Verifique seu email para finalizar a alteração.",
+            });
+            session.signOut()
           } else {
             throw new Error("Usuário não encontrado.");
           }
