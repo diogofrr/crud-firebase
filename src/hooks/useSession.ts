@@ -3,7 +3,13 @@ import User from "@/core/User";
 import UserCollection from "@/firebase/db/UserCollection";
 import IUserRepo from "@/core/UserRepo";
 import { SessionContext } from "@/contexts/Session/SessionContext";
-import { ILoginSession } from "@/types/login";
+import { ILoginSession } from "@/types/auth";
+import { User as UserAuth } from "firebase/auth";
+
+export interface IUpdateSessionArgs {
+  session?: UserAuth;
+  user?: User;
+}
 
 export default function useSession() {
   const repo: IUserRepo = useMemo(() => new UserCollection(), []);
@@ -69,11 +75,21 @@ export default function useSession() {
       .catch((err) => console.error(err));
   }, [context]);
 
+  const updateCookieSession = useCallback(async (profileData: IUpdateSessionArgs) => {
+    await fetch("/api/auth/update-session", {
+      method: "PUT",
+      cache: "no-cache",
+      redirect: "follow",
+      body: JSON.stringify(profileData)
+    })
+  }, [])
+
   return {
     profileData: context?.state,
     getUserInformation,
     updateUserInformation,
     createUserInformation,
     signOut,
+    updateCookieSession
   };
 }

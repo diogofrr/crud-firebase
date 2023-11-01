@@ -27,7 +27,6 @@ export default function Profile() {
   const { handleCloseModal, handleOpenModal, openModal } = useModal();
   const initialValues = {
     email: session.profileData?.userData?.email ?? "",
-    password: "",
   };
   const { values, handleChangeValue, errors, handleSubmit, handleValidate } =
     useFormValidation(initialValues);
@@ -36,7 +35,6 @@ export default function Profile() {
     handleValidate(() => {
       const updatedErrors = {
         email: "",
-        password: "",
       };
 
       updatedErrors.email = emailFieldValidation(errors, values.email).email;
@@ -83,7 +81,6 @@ export default function Profile() {
     if (auth.currentUser && session.profileData?.userData) {
       handleCloseModal();
       startLoading("Atualizando email...");
-
       verifyBeforeUpdateEmail(auth.currentUser, values.email)
         .then(() => {
           if (session.profileData?.userData) {
@@ -98,7 +95,7 @@ export default function Profile() {
             throw new Error("Usuário não encontrado.");
           }
         })
-        .catch((err) => {
+        .catch(() => {
           stopLoading({
             status: "warning",
             message: "Houve um erro ao tentar atualizar o email.",
@@ -125,6 +122,32 @@ export default function Profile() {
         });
   };
 
+  const handleSaveProfilePicture = (event: React.FormEvent<HTMLInputElement>) => {
+    startLoading("Alterando a foto de perfil...");
+    const file = event.currentTarget.files?.[0]
+
+    if (file) {
+      const blob = new Blob([file], { type: file.type });
+      const imageUrl = URL.createObjectURL(blob);
+
+      stopLoading({
+        message: "Imagem alterada com sucesso",
+        status: "success"
+      })
+    } else {
+      stopLoading({
+        message: "Houve um erro ao alterar a imagem",
+        status: "error"
+      })
+    }
+
+    // if (session.profileData?.userData) {
+    //   const userData = session.profileData.userData 
+    //   userData.profilePicture = value
+    //   session.updateCookieSession({ user: userData })
+    // }
+  }
+
   return (
     <>
       {session.profileData?.userData?.email && (
@@ -148,9 +171,10 @@ export default function Profile() {
             ) : (
               <div className="w-56 h-56 rounded-full bg-gray-100 border-2 border-tuna"></div>
             )}
-            <button className="bg-titanWhite rounded-full p-1 absolute right-4 top-3/4 border-2 border-chetwodeBlue">
-              <CamIcon height="w-8" width="h-8" className="text-chetwodeBlue" />
-            </button>
+            <label htmlFor="profile-picture" className="bg-titanWhite hover:bg-chetwodeBlue group rounded-full p-1 absolute right-4 top-3/4 border-2 border-chetwodeBlue cursor-pointer">
+              <input id="profile-picture" className="hidden" name="profile-picture" type="file" accept="image/*" onChange={(e) => handleSaveProfilePicture(e)} />
+              <CamIcon height="w-8" width="h-8" className="text-chetwodeBlue group-hover:text-titanWhite" />
+            </label>
           </div>
           <div>
             <div className="flex items-center justify-center">

@@ -4,7 +4,7 @@ import {
 } from "@/constants/constants";
 import { serialize } from "cookie";
 import { NextResponse } from "next/server";
-import { ILoginSession } from "@/types/login";
+import { ILoginSession } from "@/types/auth";
 
 export async function POST(request: Request) {
   const { session, user }: ILoginSession = await request.json();

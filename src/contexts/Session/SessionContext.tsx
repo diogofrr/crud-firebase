@@ -12,7 +12,7 @@ import {
 } from "react";
 import initialState, { IInitialState } from "./data";
 import reducer from "./reducer";
-import { ILocalSessionResponse, SessionStatus } from "@/types/login";
+import { ILocalSessionResponse, SessionStatus } from "@/types/auth";
 import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants";
 
 interface ISessionContextProps {

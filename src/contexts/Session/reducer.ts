@@ -3,7 +3,7 @@ import User from "@/core/User";
 
 import actions from "./actions";
 import { AUTHENTICATED, UNAUTHENTICATED } from "@/constants/constants";
-import { SessionStatus } from "@/types/login";
+import { SessionStatus } from "@/types/auth";
 
 type ACTIONTYPE =
   | {

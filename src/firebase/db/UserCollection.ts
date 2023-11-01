@@ -4,7 +4,6 @@ import { firestore } from "../config";
 import {
   QueryDocumentSnapshot,
   SnapshotOptions,
-  addDoc,
   collection,
   doc,
   getDoc,
@@ -83,5 +82,9 @@ export default class UserCollection implements IUserRepo {
     } else {
       throw new Error("Usuário não autenticado");
     }
+  }
+
+  async savePicture() {
+    return null
   }
 }
