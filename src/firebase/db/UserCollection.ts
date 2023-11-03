@@ -10,6 +10,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default class UserCollection implements IUserRepo {
   #converter = {
@@ -84,7 +85,25 @@ export default class UserCollection implements IUserRepo {
     }
   }
 
-  async savePicture() {
-    return null
+  async savePicture(file: Blob) {
+    const storage = getStorage();
+    const auth = getAuth();
+    const session = auth.currentUser;
+
+    const storageRef = ref(storage, `${session?.uid}`);
+    const url = uploadBytes(storageRef, file)
+    .then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    })
+    .then(async () => {
+      const url = await getDownloadURL(storageRef);
+      return url;
+    })
+    .catch((err) => {
+      console.error(err);
+      return null;
+    })
+
+    return url
   }
 }

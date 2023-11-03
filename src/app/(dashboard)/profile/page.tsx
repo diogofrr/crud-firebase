@@ -31,6 +31,8 @@ export default function Profile() {
   const { values, handleChangeValue, errors, handleSubmit, handleValidate } =
     useFormValidation(initialValues);
 
+  const name = session.profileData?.userData?.name.split(' ')
+
   const handleProfileFormSubmit = () => {
     handleValidate(() => {
       const updatedErrors = {
@@ -124,28 +126,29 @@ export default function Profile() {
 
   const handleSaveProfilePicture = (event: React.FormEvent<HTMLInputElement>) => {
     startLoading("Alterando a foto de perfil...");
-    const file = event.currentTarget.files?.[0]
+    const file = event.currentTarget.files?.[0];
 
     if (file) {
       const blob = new Blob([file], { type: file.type });
-      const imageUrl = URL.createObjectURL(blob);
 
-      stopLoading({
-        message: "Imagem alterada com sucesso",
-        status: "success"
+      session.uploadProfilePicture(blob).then(() => {
+        stopLoading({
+          message: "Imagem alterada com sucesso",
+          status: "success"
+        });
+      })
+      .catch(() => {
+        stopLoading({
+          message: "Não foi possível alterar a foto de perfil.",
+          status: "error"
+        });
       })
     } else {
       stopLoading({
         message: "Houve um erro ao alterar a imagem",
         status: "error"
-      })
+      });
     }
-
-    // if (session.profileData?.userData) {
-    //   const userData = session.profileData.userData 
-    //   userData.profilePicture = value
-    //   session.updateCookieSession({ user: userData })
-    // }
   }
 
   return (
@@ -159,19 +162,24 @@ export default function Profile() {
       )}
       <div className="bg-white w-full max-w-4xl rounded-2xl shadow-xl h-[780px] pt-12 mx-auto">
         <div className="flex flex-col gap-5 items-center justify-center w-full max-w-2xl mx-auto px-4">
-          <div className="relative">
+          <div className="relative w-56 h-56">
             {session.profileData?.userData?.profilePicture ? (
               <Image
-                src={session.profileData.userData.profilePicture}
+                src={session.profileData.userData.profilePicture.toString()}
                 alt={`Foto de perfil de ${session.profileData.userData.name}`}
-                width={224}
-                height={224}
                 className="rounded-full"
+                fill
+                priority
+                quality={100}
               />
             ) : (
-              <div className="w-56 h-56 rounded-full bg-gray-100 border-2 border-tuna"></div>
+              <div className="relative w-56 h-56 bg-chetwodeBlue rounded-full flex items-center justify-center">
+                {name && (
+                  <p className="text-white text-6xl">{`${name[0][0]}${name[1][0]}`}</p>
+                )}
+              </div>
             )}
-            <label htmlFor="profile-picture" className="bg-titanWhite hover:bg-chetwodeBlue group rounded-full p-1 absolute right-4 top-3/4 border-2 border-chetwodeBlue cursor-pointer">
+            <label htmlFor="profile-picture" className="bg-titanWhite hover:bg-chetwodeBlue group rounded-full p-1 absolute right-4 top-3/4 border-2 border-chetwodeBlue hover:border-titanWhite cursor-pointer">
               <input id="profile-picture" className="hidden" name="profile-picture" type="file" accept="image/*" onChange={(e) => handleSaveProfilePicture(e)} />
               <CamIcon height="w-8" width="h-8" className="text-chetwodeBlue group-hover:text-titanWhite" />
             </label>

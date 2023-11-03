@@ -75,14 +75,36 @@ export default function useSession() {
       .catch((err) => console.error(err));
   }, [context]);
 
-  const updateCookieSession = useCallback(async (profileData: IUpdateSessionArgs) => {
-    await fetch("/api/auth/update-session", {
-      method: "PUT",
-      cache: "no-cache",
-      redirect: "follow",
-      body: JSON.stringify(profileData)
-    })
-  }, [])
+  const updateCookieSession = useCallback(
+    async (profileData: IUpdateSessionArgs) => {
+      await fetch("/api/auth/update-session", {
+        method: "PUT",
+        cache: "no-cache",
+        redirect: "follow",
+        body: JSON.stringify(profileData),
+      });
+    },
+    []
+  );
+
+  const uploadProfilePicture = useCallback(
+    async (file: Blob) => {
+      await repo.savePicture(file)
+        .then((url) => {
+          if (context?.state.userData && url) {
+            const userData = context.state.userData;
+            userData.profilePicture = url;
+            updateUserInformation(userData)
+          } else {
+            throw new Error();
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    [context?.state.userData, repo, updateUserInformation]
+  );
 
   return {
     profileData: context?.state,
@@ -90,6 +112,7 @@ export default function useSession() {
     updateUserInformation,
     createUserInformation,
     signOut,
-    updateCookieSession
+    updateCookieSession,
+    uploadProfilePicture,
   };
 }

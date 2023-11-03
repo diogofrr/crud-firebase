@@ -10,6 +10,7 @@ interface IHeaderProps {
 export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
   const { profileData } = useSession();
   const name = profileData?.userData?.name.split(' ')
+  const url = profileData?.userData?.profilePicture
 
   return (
     <header className="flex items-center pt-8 h-20">
@@ -23,18 +24,22 @@ export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
       )}
       <span className="flex ml-auto items-center">
         {profileData?.userData?.profilePicture ? (
-          <Image
-            src={profileData?.userData?.profilePicture}
-            alt={`Foto de perfil de ${profileData?.userData?.name}`}
-            width={32}
-            height={32}
-            className="rounded-full mr-2"
-            priority
-            quality={100}
-            fill
-          />
+          <div className="relative w-9 h-9 mr-2">
+            <Image
+              src={profileData?.userData?.profilePicture}
+              alt={`Foto de perfil de ${profileData?.userData?.name}`}
+              className="rounded-full mr-2"
+              priority
+              quality={100}
+              fill
+            />
+          </div>
         ) : (
-          <span className="w-8 h-8 bg-gray-100 rounded-full mr-2"></span>
+          <div className="relative w-9 h-9 bg-chetwodeBlue rounded-full mr-2 flex items-center justify-center">
+            {name && (
+              <p className="text-white text-sm">{`${name[0][0]}${name[1][0]}`}</p>
+            )}
+          </div>
         )}
         <p className="text-tuna mr-2 capitalize">
           {name && `${name[0]} ${name[name.length - 1][0]}.`}
