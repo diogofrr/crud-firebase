@@ -37,12 +37,12 @@ export default function Header({ menuOpen, handleOpenMenu }: IHeaderProps) {
         ) : (
           <div className="relative w-9 h-9 bg-chetwodeBlue rounded-full mr-2 flex items-center justify-center">
             {name && (
-              <p className="text-white text-sm">{`${name[0][0]}${name[1][0]}`}</p>
+              <p className="text-white text-sm">{`${name[0][0]}${Boolean(name[1]?.[0]) ? name[1][0] : ''}`}</p>
             )}
           </div>
         )}
         <p className="text-tuna mr-2 capitalize">
-          {name && `${name[0]} ${name[name.length - 1][0]}.`}
+          {name && `${name[0]} ${name.length > 1 ? `${name[name.length - 1][0]}.` : ''}`}
         </p>
       </span>
     </header>
